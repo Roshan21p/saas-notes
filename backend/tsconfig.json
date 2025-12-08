@@ -9,6 +9,8 @@
     "target": "es2020",            // Target modern JS version supported by Node.js v14+
     "lib": ["ES2020"],             // Includes built-in JS features for ES2020
     "types": ["node"],             // Include Node.js type definitions
+    "typeRoots": ["./src/types", "./node_modules/@types"],
+
 
     // Debugging
     "sourceMap": true,             // Generates source maps for debugging
