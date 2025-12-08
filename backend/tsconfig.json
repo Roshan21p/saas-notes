@@ -1,0 +1,38 @@
+{
+  "compilerOptions": {
+    // File layout
+    "rootDir": "./src",
+    "outDir": "./dist",
+
+    // Environment settings
+    "module": "commonjs",          // Node.js uses CommonJS modules
+    "target": "ES2020",            // Target modern JS version supported by Node.js v14+
+    "lib": ["ES2020"],             // Includes built-in JS features for ES2020
+    "types": ["node"],             // Include Node.js type definitions
+
+    // Debugging
+    "sourceMap": true,             // Generates source maps for debugging
+
+    // Output declarations
+    "declaration": true,           // Generate .d.ts files for type declarations (good for libraries)
+    "declarationMap": true,        // Maps declaration files to TS source (optional)
+
+    // Strictness & type checking
+    "strict": true,                // Enable all strict type checks
+    "noUncheckedIndexedAccess": true,
+    "exactOptionalPropertyTypes": true,
+
+    // Module and import options
+    "isolatedModules": true,       // Needed for compatibility with tools like Babel or ts-node
+    "esModuleInterop": true,       // Enables compatibility between CommonJS and ES modules
+
+    // Performance
+    "skipLibCheck": true,          // Skip type checks on declaration files for faster builds
+
+    // Optional - style and error prevention (uncomment as needed)
+    // "noImplicitReturns": true,
+    // "noUnusedLocals": true,
+    // "noUnusedParameters": true,
+    // "noFallthroughCasesInSwitch": true,
+  }
+}
