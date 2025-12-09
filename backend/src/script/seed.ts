@@ -1,0 +1,65 @@
+import connectDB from "../config/dbConfig";
+import { Note } from "../models/note";
+import { Tenant } from "../models/tenant";
+import { User } from "../models/user";
+import bcrypt from "bcrypt";
+
+async function seed()  {
+  try {
+    // connect to MongoDB
+    await connectDB();
+
+    // Clear existing data to avoid duplicates on re-run
+    console.log("Seeding: clearing existing data...");
+    await Promise.all([
+        Note.deleteMany({}),
+        User.deleteMany({}),
+        Tenant.deleteMany({})
+    ]);
+
+    // Create tenants
+    console.log("Creating tenants...");
+
+    const acme = await Tenant.create({
+        name: "Acme Corporation",
+        slug: "acme",
+        plan: "free",
+        noteLimit: 3
+    });
+
+    const globex = await Tenant.create({
+        name: "Globex Corporation",
+        slug: "globex",
+        plan: "free",
+        noteLimit: 3
+    });
+
+    // Hash password once for all users (plain password: "password")
+    const plainPassword = "password";
+    const hashedPassword = await bcrypt.hash(plainPassword, 10);
+
+    // Create users for both tenants with roles
+    console.log("Creating users...");
+     const users = await User.create([
+      { name: "Roshan", email: "admin@acme.test", password: hashedPassword, role: "Admin", tenantId: acme._id },
+      { name: "Anand", email: "user@acme.test", password: hashedPassword, role: "Member", tenantId: acme._id },
+      { name: "Akash", email: "admin@globex.test", password: hashedPassword, role: "Admin", tenantId: globex._id },
+      { name: "Suraj", email: "user@globex.test", password: hashedPassword, role: "Member", tenantId: globex._id },
+    ]);
+
+     // Create sample notes for users, maintaining tenant isolation
+    console.log("Creating some sample notes...");
+    await Note.create([
+      { title: "Acme Note 1", content: "This is acme note one.", tenantId: acme._id, userId: users[0]!._id },
+      { title: "Acme Note 2", content: "This is acme note two.", tenantId: acme._id, userId: users[1]!._id },
+      { title: "Globex Note 1", content: "This is globex note one.", tenantId: globex._id, userId: users[2]!._id },
+    ]);
+
+    process.exit(0);  // means successful data filled
+  } catch (error) {
+    console.error("Seeding failed:", error);
+    process.exit(1);
+  }  
+}
+
+seed();
