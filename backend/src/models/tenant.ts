@@ -13,7 +13,7 @@ export interface ITenant extends Document {
     plan: "free" | "pro";    // Subscription plan
     noteLimit:  number    // Max notes if free plan
     createdAt: Date;
-    updatedAt: Date;
+    updateAt: Date;
 }
 
 
