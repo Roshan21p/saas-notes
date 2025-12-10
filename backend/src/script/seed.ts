@@ -34,17 +34,15 @@ async function seed()  {
         noteLimit: 3
     });
 
-    // Hash password once for all users (plain password: "password")
     const plainPassword = "password";
-    const hashedPassword = await bcrypt.hash(plainPassword, 10);
 
     // Create users for both tenants with roles
     console.log("Creating users...");
      const users = await User.create([
-      { name: "Roshan", email: "admin@acme.test", password: hashedPassword, role: "Admin", tenantId: acme._id },
-      { name: "Anand", email: "user@acme.test", password: hashedPassword, role: "Member", tenantId: acme._id },
-      { name: "Akash", email: "admin@globex.test", password: hashedPassword, role: "Admin", tenantId: globex._id },
-      { name: "Suraj", email: "user@globex.test", password: hashedPassword, role: "Member", tenantId: globex._id },
+      { name: "Roshan", email: "admin@acme.test", password: plainPassword, role: "Admin", tenantId: acme._id },
+      { name: "Anand", email: "user@acme.test", password: plainPassword, role: "Member", tenantId: acme._id },
+      { name: "Akash", email: "admin@globex.test", password: plainPassword, role: "Admin", tenantId: globex._id },
+      { name: "Suraj", email: "user@globex.test", password: plainPassword, role: "Member", tenantId: globex._id },
     ]);
 
      // Create sample notes for users, maintaining tenant isolation
