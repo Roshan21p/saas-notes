@@ -12,9 +12,9 @@ declare global {
             // req.user comes from your JWT authentication middleware
             user?: {
                 userId: string;
-                tenantId: string;
+                email: string;
                 role: "Admin" | "Member";
-                email?: string;
+                tenantId: string;
             };
             // req.tenant is a tenant document fetched from DB
             tenant?: ITenant | null;

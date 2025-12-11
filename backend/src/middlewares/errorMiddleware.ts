@@ -10,6 +10,7 @@ export function errorHandler(
     const statusCode = err.statusCode || 500;
     const message = err.message || "Interval Server Error";
 
+
     res
     .status(statusCode)
     .json({success: false, message})

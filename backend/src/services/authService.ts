@@ -30,7 +30,8 @@ export const loginService = async (data: {email: string; password: string }) => 
     const token = createJWT({
         id: user._id, 
         email: user.email,
-
+        role: user.role,
+        tenantId: user.tenantId,
     });
 
     return {
