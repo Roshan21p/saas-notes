@@ -8,6 +8,7 @@ export const requireAuth = (req: Request, res: Response, next: NextFunction) => 
         //1. Check if Authorization header exists and has Bearer token
         const authHeader = req.headers.authorization;
 
+
         if(!authHeader || !authHeader.startsWith("Bearer ")){
             throw new AppError(401,"Unauthorized: Missing or invalid token")
         }

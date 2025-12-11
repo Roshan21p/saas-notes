@@ -1,0 +1,25 @@
+import { Request, Response, NextFunction } from "express";
+import { createNoteService } from "../services/noteService";
+import { AppError } from "../utils/AppError";
+
+export const createNoteController = async (req: Request, res: Response, next: NextFunction) => {
+    try {
+        if(!req.user){
+            return next(
+                new AppError(401, "Authentication required. Please log in.")
+            );
+        }
+        const response = await createNoteService(req.body, req.user);
+
+        return res
+                .status(201)
+                .json({
+                    success: true,
+                    message: "Note created successfully",
+                    data: response
+                })
+    } catch (error) {
+        console.log("Create Note Controller error:", error);
+        next(error);
+    }
+}

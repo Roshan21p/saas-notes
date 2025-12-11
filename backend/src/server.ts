@@ -3,8 +3,8 @@ dotenv.config();
 
 import app from "./app";
 import  connectDB  from "./config/dbConfig"
+import { PORT } from "./config/serverConfig";
 
-const PORT = 3000;
 
 app.listen(PORT, async () => {
     try {
