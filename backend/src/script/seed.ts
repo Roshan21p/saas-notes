@@ -2,7 +2,6 @@ import connectDB from "../config/dbConfig";
 import { Note } from "../models/note";
 import { Tenant } from "../models/tenant";
 import { User } from "../models/user";
-import bcrypt from "bcrypt";
 
 async function seed()  {
   try {

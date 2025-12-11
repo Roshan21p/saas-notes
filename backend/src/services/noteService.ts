@@ -21,8 +21,12 @@ export const createNoteService = async (data: createNoteInput, user: userData) =
         const { userId, tenantId } = user;
     
         // Check whether the required field is present or not
-        if(!title || !content){
-            throw new AppError(400,"title and content is required");
+        if (!title || title.trim() === "") {
+            throw new AppError(400, "Title is required and cannot be empty.");
+        }
+
+        if (!content || content.trim() === "") {
+            throw new AppError(400, "Content is required and cannot be empty.");
         }
 
         // Get tenant details (plan + note limit)
@@ -49,11 +53,31 @@ export const createNoteService = async (data: createNoteInput, user: userData) =
         })
 
         if(!note){
-            throw new AppError(500,'Note able to create a note');
+            throw new AppError(500,'Not able to create a note');
         }
 
         return note;
     } catch (error) {
         throw error;
     }
+}
+
+export const listNotesService = async (user: userData) => {
+   try {
+     const { userId, tenantId, role} = user || {};   // Prevent destructure error
+ 
+    if(role === "Member") {
+      throw new AppError(403, "Member is not allowed to see all the notes");
+    }
+ 
+     const notes = await Note.find({ tenantId }).sort({ createdAt: -1 });
+ 
+     if(!notes){
+         throw new AppError(500,"Not able to fetch all the notes")
+     }
+ 
+     return notes;
+   } catch (error) {
+    throw error;
+   }
 }
