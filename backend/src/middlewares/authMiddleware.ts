@@ -10,14 +10,14 @@ export const requireAuth = (req: Request, res: Response, next: NextFunction) => 
 
 
         if(!authHeader || !authHeader.startsWith("Bearer ")){
-            throw new AppError(401,"Unauthorized: Missing or invalid token")
+            return next( new AppError(401,"Unauthorized: Missing or invalid token"))
         }
 
         // 2. Extract token
         const token = authHeader.split(" ")[1];
 
         if(!token){
-            throw new AppError(401,"No auth token provided. Please log in again.");
+            return next( new AppError(401,"No auth token provided. Please log in again."));
         }
 
         // 3. Centralized verification
@@ -36,7 +36,7 @@ export const requireAuth = (req: Request, res: Response, next: NextFunction) => 
     } catch (error) {
         console.log("Auth middleware error", error);
         // If JWT verification fails or other error happens, forward error to error handler
-        next(new AppError(401, "Unauthorized: Invalid or expired token"));
+        return next(new AppError(401, "Unauthorized: Invalid or expired token"));
     }
 }
 

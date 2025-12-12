@@ -16,7 +16,6 @@ interface userData {
 
 export const createNoteService = async (data: createNoteInput, user: userData) => {
     try {
-        console.log("user",user);
         const { title, content} = data || {};  // Prevent destructure error
         const { userId, tenantId } = user;
     
@@ -70,7 +69,7 @@ export const listNotesService = async (user: userData) => {
       throw new AppError(403, "Member is not allowed to see all the notes");
     }
  
-     const notes = await Note.find({ tenantId }).sort({ createdAt: -1 });
+     const notes = await Note.find({ tenantId }).sort({ createdAt: -1 }).populate("userId", "-password");
  
      if(!notes){
          throw new AppError(500,"Not able to fetch all the notes")
@@ -80,4 +79,30 @@ export const listNotesService = async (user: userData) => {
    } catch (error) {
     throw error;
    }
+}
+
+export const getNoteByIdService = async (noteId: string | undefined, user: userData) => {
+    try {
+        const { userId, tenantId, role } = user || {} // Prevent destructure error;
+
+        if(!noteId){
+            throw new AppError(400,"Note Id is required.")
+        }
+
+        const note = await Note.findOne({_id: noteId, tenantId}).populate("userId", "-password");
+
+        if(!note){
+            throw new AppError(404,"Note not found.")
+        }
+
+        if(role === "Member"){
+            if(note.userId._id.toString() !== userId){
+                throw new AppError(403, "You are not allowed to access this note.");
+            }
+        }
+
+        return note;
+    } catch (error) {
+        throw error
+    }
 }
