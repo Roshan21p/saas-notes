@@ -7,15 +7,15 @@ const app = express();
 
 app.use(express.json());
 app.use(express.text());
-app.use(express.urlencoded({ extended: true}));
+app.use(express.urlencoded({ extended: true }));
 
-app.use(morgan('dev'));
+app.use(morgan("dev"));
 
-app.use('/api', apiRouter);
+app.use("/api", apiRouter);
 
-app.use('/ping', (req,res) => {
-    res.end('Pong');
-})
+app.use("/ping", (req, res) => {
+  res.end("Pong");
+});
 
 // Use error handler as the last middleware
 app.use(errorHandler);

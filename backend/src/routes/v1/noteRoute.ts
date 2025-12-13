@@ -1,15 +1,20 @@
 import { Router } from "express";
-import { createNoteController, getNoteByIdController, listNotesController } from "../../controllers/noteController";
+import {
+  createNoteController,
+  getNoteByIdController,
+  listNotesController,
+  updateNoteByIdController,
+} from "../../controllers/noteController";
 import { requireAuth } from "../../middlewares/authMiddleware";
 
 const router = Router();
 
-router.post('/', requireAuth, createNoteController);
+router.post("/", requireAuth, createNoteController);
 
-router.get('/', requireAuth, listNotesController);
+router.get("/", requireAuth, listNotesController);
 
-router.get('/:id', requireAuth, getNoteByIdController);
+router.get("/:id", requireAuth, getNoteByIdController);
 
-
+router.patch("/:id", requireAuth, updateNoteByIdController);
 
 export default router;
