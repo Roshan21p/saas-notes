@@ -2,6 +2,7 @@ import { Request, Response, NextFunction } from "express";
 import {
   createNoteService,
   getNoteByIdService,
+  listMyNotesService,
   listNotesService,
   updateNoteByIdService,
 } from "../services/noteService";
@@ -52,6 +53,30 @@ export const listNotesController = async (
   }
 };
 
+export const listMyNotesController = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
+  try {
+    if (!req.user) {
+      return next(new AppError(401, "Authentication required. Please log in."));
+    }
+
+    const response = await listMyNotesService(req.user);
+
+    return res.status(200).json({
+      success: true,
+      message: "Your notes fetched successfully.",
+      data: response,
+    });
+
+  } catch (error) {
+    console.log("List my Notes Controller error", error);
+    next(error);
+  }
+};
+
 export const getNoteByIdController = async (
   req: Request,
   res: Response,
@@ -97,7 +122,7 @@ export const updateNoteByIdController = async (
 
     return res.status(200).json({
       success: true,
-        message: "Note updated successfully.",
+      message: "Note updated successfully.",
       data: response,
     });
   } catch (error) {

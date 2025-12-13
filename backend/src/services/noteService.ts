@@ -77,9 +77,17 @@ export const listNotesService = async (user: userData) => {
       .sort({ createdAt: -1 })
       .populate("userId", "-password");
 
-    if (!notes) {
-      throw new AppError(500, "Not able to fetch all the notes");
-    }
+    return notes;
+  } catch (error) {
+    throw error;
+  }
+};
+
+export const listMyNotesService = async (user: userData) => {
+  try {
+    const { userId, tenantId } = user || {}; // Prevent destructure error
+
+    const notes = await Note.find({ tenantId, userId }).sort({ createdAt: -1 });
 
     return notes;
   } catch (error) {
