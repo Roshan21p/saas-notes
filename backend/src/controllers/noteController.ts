@@ -1,6 +1,7 @@
 import { Request, Response, NextFunction } from "express";
 import {
   createNoteService,
+  deleteNoteByIdService,
   getNoteByIdService,
   listMyNotesService,
   listNotesService,
@@ -70,7 +71,6 @@ export const listMyNotesController = async (
       message: "Your notes fetched successfully.",
       data: response,
     });
-
   } catch (error) {
     console.log("List my Notes Controller error", error);
     next(error);
@@ -127,6 +127,30 @@ export const updateNoteByIdController = async (
     });
   } catch (error) {
     console.log("Update Notes By ID Controller error", error);
+    next(error);
+  }
+};
+
+export const deleteNoteByIdController = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
+  try {
+    if (!req.user) {
+      return next(new AppError(401, "Authentication required. Please log in."));
+    }
+
+    const response = await deleteNoteByIdService(req.params.id, req.user);
+
+    return res.status(200).json({
+      success: true,
+       message: "Note deleted successfully",
+      data: response
+    });
+
+  } catch (error) {
+    console.error("Delete Note Controller error:", error);
     next(error);
   }
 };

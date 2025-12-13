@@ -40,7 +40,7 @@ export const createNoteService = async (data: noteInput, user: userData) => {
     const noteCount = await Note.countDocuments({ tenantId });
 
     // Enforce plan-based note limit
-    if (noteCount >= tenant.noteLimit) {
+    if (tenant.plan === "free" && noteCount >= tenant.noteLimit) {
       throw new AppError(
         400,
         `Note limit reached for '${tenant.name}'. Upgrade your plan to create more notes.`
@@ -116,7 +116,7 @@ export const getNoteByIdService = async (
     }
 
     if (role === "Member") {
-      if (note.userId._id.toString() !== userId) {
+      if (note.userId.toString() !== userId) {
         throw new AppError(403, "You are not allowed to access this note.");
       }
     }
@@ -151,17 +151,14 @@ export const updateNoteByIdService = async (
     }
 
     // Fetch note with tenant isolation
-    const note = await Note.findOne({ _id: noteId, tenantId }).populate(
-      "userId",
-      "-password"
-    );
+    const note = await Note.findOne({ _id: noteId, tenantId });
 
     if (!note) {
       throw new AppError(404, "Note not found.");
     }
 
     // Apply updates
-    if (role === "Member" && note.userId._id.toString() !== userId) {
+    if (role === "Member" && note.userId.toString() !== userId) {
       throw new AppError(403, "You are not allowed to update this note.");
     }
 
@@ -177,6 +174,37 @@ export const updateNoteByIdService = async (
       ...(content !== undefined && { content: note.content }),
       updatedAt: note.updatedAt,
     };
+  } catch (error) {
+    throw error;
+  }
+};
+
+export const deleteNoteByIdService = async (
+  noteId: string | undefined,
+  user: userData
+) => {
+  try {
+    const { userId, tenantId, role } = user || {};
+
+    if (!noteId) {
+      throw new AppError(400, "Note ID is required.");
+    }
+
+    // Fetch note with tenant isolation
+    const note = await Note.findOne({ _id: noteId, tenantId });
+
+    if (!note) {
+      throw new AppError(404, "Note not found.");
+    }
+
+    // Member can delete only own notes
+    if (role === "Member" && note.userId.toString() !== userId) {
+      throw new AppError(403, "You are not allowed to delete this note.");
+    }
+
+    await note.deleteOne();
+
+    return note;
   } catch (error) {
     throw error;
   }
