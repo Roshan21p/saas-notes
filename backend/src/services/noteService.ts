@@ -8,7 +8,7 @@ interface noteInput {
   content: string;
 }
 
-interface userData {
+export interface userData {
   userId: string;
   email: string;
   role: "Admin" | "Member";

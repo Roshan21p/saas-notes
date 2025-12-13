@@ -23,14 +23,14 @@ async function seed() {
       name: "Acme Corporation",
       slug: "acme",
       plan: "free",
-      noteLimit: 5,
+      noteLimit: 3,
     });
 
     const globex = await Tenant.create({
       name: "Globex Corporation",
       slug: "globex",
       plan: "free",
-      noteLimit: 5,
+      noteLimit: 3,
     });
 
     const plainPassword = "password";

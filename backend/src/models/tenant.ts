@@ -35,7 +35,7 @@ const tenantSchema = new Schema<ITenant>(
     },
     noteLimit: {
       type: Number,
-      default: 5,
+      default: 3,
     },
   },
   {
