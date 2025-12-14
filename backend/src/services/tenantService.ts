@@ -113,7 +113,7 @@ export const inviteUserService = async (
     });
 
     const inviteToken = jwt.sign(
-      { userId: newUser._id, email, role, tenantId },
+      { id: newUser._id, email, role, tenantId },
       JWT_SECRET,
       { expiresIn: "2d" }
     );
@@ -121,12 +121,9 @@ export const inviteUserService = async (
     // Create invitation URL (frontend handles invite acceptance)
     const inviteUrl = `${FRONTEND_URL}/invite?token=${inviteToken}`;
 
-    console.log("inviteUrl", inviteUrl);
-
     const companyName = slug
       ? slug.charAt(0).toUpperCase() + slug.slice(1)
       : "";
-    console.log("companyName", companyName);
 
     // Compose email content
     const emailHtml = `

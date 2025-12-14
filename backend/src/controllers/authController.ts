@@ -1,5 +1,5 @@
 import { Request, Response, NextFunction } from "express"
-import { loginService } from "../services/authService";
+import { acceptInviteService, loginService } from "../services/authService";
 
 export const loginController = async (req: Request, res: Response, next: NextFunction) => {
     try {
@@ -22,6 +22,21 @@ export const loginController = async (req: Request, res: Response, next: NextFun
             })
     } catch (error) {
         console.log(" Auth controller error: ", error);
+        next(error);
+    }
+}
+
+export const acceptInviteController = async (req: Request, res: Response, next: NextFunction) => {
+    try {
+         const response = await acceptInviteService(req.body);
+
+    res.status(200).json({
+      success: true,
+      message: "Invite accepted successfully. You can now log in.",
+      data: response,
+    });
+    } catch (error) {
+        console.log(" Accept invite controller error: ", error);
         next(error);
     }
 }

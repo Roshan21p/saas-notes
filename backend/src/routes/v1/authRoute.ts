@@ -1,8 +1,11 @@
 import { Router } from "express";
-import { loginController } from "../../controllers/authController";
+import { acceptInviteController, loginController } from "../../controllers/authController";
 
 const router = Router();
 
 router.post("/login", loginController);
+
+router.post("/accept-invite", acceptInviteController );
+
 
 export default router;

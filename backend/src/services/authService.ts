@@ -1,7 +1,15 @@
 import { User } from "../models/user";
 import { AppError } from "../utils/AppError";
-import bcrypt from "bcrypt";
 import { createJWT } from "../utils/authUtils";
+import bcrypt from "bcrypt";
+
+import { verifyToken } from "../utils/verifyToken";
+
+interface AcceptInviteInput {
+   token: string;
+  password: string;
+}
+
 
 export const loginService = async (data: {
   email: string;
@@ -50,3 +58,40 @@ export const loginService = async (data: {
     throw error;
   }
 };
+
+
+export const acceptInviteService = async ({ token, password }: AcceptInviteInput) => {
+  try {
+     if (!token) {
+    throw new AppError(400, "Invite token is required.");
+  }
+  if (!password) {
+    throw new AppError(400, "Password is required.");
+  }
+
+  let payload: any;
+
+  payload = verifyToken(token);
+
+  const user = await User.findById(payload.id);
+
+   if (!user) {
+    throw new AppError(404, "User not found.");
+  }
+
+  if (!user.isInvited) {
+    throw new AppError(400, "Invite already accepted.");
+  }
+
+   // Hash the new password
+  const saltRounds = 10;
+  const hashedPassword = await bcrypt.hash(password, saltRounds);
+
+  user.password = hashedPassword;
+  user.isInvited = false; // mark as accepted
+  await user.save();
+
+  } catch (error) {
+    throw error;
+  }
+}
