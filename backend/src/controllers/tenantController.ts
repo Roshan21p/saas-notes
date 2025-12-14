@@ -1,6 +1,9 @@
 import { Request, Response, NextFunction } from "express";
 import { AppError } from "../utils/AppError";
-import { upgradeTenantPlanService } from "../services/tenantService";
+import {
+  inviteUserService,
+  upgradeTenantPlanService,
+} from "../services/tenantService";
 
 export const upgradeTenantPlanController = async (
   req: Request,
@@ -21,6 +24,28 @@ export const upgradeTenantPlanController = async (
     });
   } catch (error) {
     console.log("upgrade TenantPlan Controller error: ", error);
+    next(error);
+  }
+};
+
+export const inviteUserController = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
+  try {
+    if (!req.user) {
+      return next(new AppError(401, "Authentication required. Please log in."));
+    }
+
+    await inviteUserService(req.body, req.user, req.params.slug);
+
+    res.status(200).json({
+      success: true,
+      message: "Invitation sent successfully.",
+    });
+  } catch (error) {
+    console.log("Invite User Controller error: ", error);
     next(error);
   }
 };

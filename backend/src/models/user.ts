@@ -7,6 +7,7 @@ export interface IUser extends Document {
   password: string;
   role: "Admin" | "Member";
   tenantId: Types.ObjectId;
+  isInvited: boolean
   createdAt: Date;
   updatedAt: Date;
 }
@@ -39,6 +40,10 @@ const userSchema = new Schema<IUser>(
       type: Schema.Types.ObjectId,
       ref: "Tenant",
       required: true,
+    },
+    isInvited: {
+      type: Boolean,
+      default: false,
     },
   },
   {
