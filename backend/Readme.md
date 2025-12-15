@@ -11,7 +11,7 @@ This repository contains the **backend service** for a **Multi-Tenant SaaS Notes
 * **TypeScript**
 * **MongoDB (Mongoose)**
 * **JWT Authentication**
-* **Helmet & CORS**
+* **CORS**
 * **Nodemailer (Email)**
 
 ---
