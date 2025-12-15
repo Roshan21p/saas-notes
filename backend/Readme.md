@@ -85,12 +85,12 @@ backend/
 │
 │   ├── routes/
 │   │   └── v1/
-│   │       ├── authRoute.ts
-│   │       ├── noteRoutes.ts
-│   │       ├── tenantRoutes.ts
-│   │       └── v1Router.ts
-│   │
-│   ├── apiRoutes.ts
+│   │   |    ├── authRoute.ts
+│   │   |    ├── noteRoutes.ts
+│   │   |    ├── tenantRoutes.ts
+│   │   |    └── v1Router.ts
+│   │   |
+│       ├── apiRoutes.ts
 │
 │   ├── script/
 │   │   └── seed.ts   // Creates Acme + Globex + Users
@@ -236,7 +236,7 @@ FRONTEND_URL=your_frontend_url
 
 ```bash
 git clone https://github.com/Roshan21p/saas-notes.git
-cd saas-notes-backend
+cd backend
 ```
 
 ### 2️⃣ Install dependencies
