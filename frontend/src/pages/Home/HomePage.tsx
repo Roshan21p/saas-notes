@@ -4,7 +4,7 @@ import { Pricing } from "@/components/Pricing/Pricing";
 import { Footer } from "@/components/Footer/Footer";
 import FeatureCard from "@/components/Feature/FeatureCard";
 
-export default function HomePage() {
+ function HomePage() {
   return (
     <div className="min-h-screen bg-linear-to-b from-slate-50 to-white flex flex-col">
       <Navbar />
@@ -52,3 +52,4 @@ export default function HomePage() {
   );
 }
 
+export default HomePage;

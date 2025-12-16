@@ -1,0 +1,86 @@
+import { useState, type ChangeEvent, type FormEvent } from "react";
+import toast from "react-hot-toast";
+import LoginPresentation from "./LoginPresentation";
+
+interface LoginData {
+  email: string;
+  password: string;
+}
+
+function Login() {
+  
+
+  // Typed useState generics
+  const [isLoading, setIsLoading] = useState<boolean>(false);
+
+  const [loginData, setLoginData] = useState<LoginData>({
+    email: "",
+    password: "",
+  });
+
+  // Handler for input changes, typed for input element change event
+  async function handleUserInput(e: ChangeEvent<HTMLInputElement>) {
+    const { name, value } = e.target;
+
+    setLoginData({
+      ...loginData,
+      [name]: value,
+    });
+  }
+
+  // Form submit handler typed with FormEvent<HTMLFormElement> for accurate form event typing
+  async function handleFormSubmit(e: FormEvent<HTMLFormElement>) {
+    e.preventDefault(); // prevent default form submit behavior (page reload)
+
+    if (!loginData.email || !loginData.password) {
+      toast.error("Missing values from the form.");
+      return;
+    }
+
+    if (!loginData.email.includes("@")) {
+      toast.error("Please enter a valid email address");
+    }
+
+    setIsLoading(true);
+
+
+    try {
+      console.log(loginData.email, loginData.password);
+      // TODO: dispatch login action or API call here
+    } catch (error) {
+      console.error("Login failed", error);
+      toast.error("Login failed. Please try again.");
+    } finally {
+      setIsLoading(false);
+    }
+  }
+
+  // Demo credentials helper
+  const fillDemoCredentials = (
+    type: "acme-admin" | "acme-member" | "globex-admin" | "globex-member"
+  ) => {
+    const credentials = {
+      "acme-admin": { email: "admin@acme.test", password: "password" },
+      "acme-member": { email: "user@acme.test", password: "password" },
+      "globex-admin": { email: "admin@globex.test", password: "password" },
+      "globex-member": { email: "user@globex.test", password: "password" },
+    };
+
+    setLoginData({
+      email: credentials[type].email,
+      password: credentials[type].password,
+    });
+  };
+
+  return (
+    <LoginPresentation
+      handleUserInput={handleUserInput}
+      handleFormSubmit={handleFormSubmit}
+      loginData={loginData}
+      isLoading={isLoading}
+      fillDemoCredentials={fillDemoCredentials}
+    />
+  );
+}
+
+export default Login;
