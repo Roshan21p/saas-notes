@@ -2,12 +2,12 @@ import type { RootState } from "@/Redux/store";
 import { Plus } from "lucide-react";
 import { useSelector } from "react-redux";
 
-function ActionButtons() {
-  const role = useSelector((state : RootState ) => state.auth.role);
+function ActionButtons({ onNewNote } : { onNewNote: () => void }) {
+  const role = useSelector((state: RootState) => state.auth.role);
   return (
     <div className="flex flex-wrap justify-center gap-3 w-full max-w-3xl">
       <button
-        onClick={() => {}}
+        onClick={onNewNote}
         className="flex items-center gap-2 px-6 py-3 bg-linear-to-r from-indigo-600 to-indigo-700 hover:from-indigo-700 hover:to-indigo-800 text-white rounded-xl text-sm font-semibold shadow-lg hover:shadow-xl hover:scale-105 transition-all duration-200"
       >
         <Plus size={18} />

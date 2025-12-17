@@ -26,7 +26,7 @@ function Login() {
   });
 
   // Handler for input changes, typed for input element change event
-  async function handleUserInput(e: ChangeEvent<HTMLInputElement>) {
+   function handleUserInput(e: ChangeEvent<HTMLInputElement>) {
     const { name, value } = e.target;
 
     setLoginData({
@@ -51,9 +51,7 @@ function Login() {
     setIsLoading(true);
 
 
-    try {
-      console.log(loginData.email, loginData.password);
-      
+    try {      
       // unwrap returns only fulfilled payload and remove payload 
       const apiResponse = await dispatch(login(loginData)).unwrap();
       console.log("apiResponse",apiResponse)
