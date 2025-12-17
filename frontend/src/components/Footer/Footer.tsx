@@ -3,7 +3,7 @@ import { Github, Linkedin } from "lucide-react";
 
 export function Footer() {
   return (
-    <footer className="bg-slate-900 text-slate-400 py-8 mt-24">
+    <footer className="bg-slate-900 text-slate-400 py-8 mt-2">
       <div className="max-w-7xl mx-auto px-4 flex flex-col md:flex-row items-center justify-between gap-4">
         <p className="text-sm">
           © {new Date().getFullYear()} SaaS Notes. All rights reserved.

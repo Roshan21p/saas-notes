@@ -1,6 +1,10 @@
 import { useState, type ChangeEvent, type FormEvent } from "react";
 import toast from "react-hot-toast";
 import LoginPresentation from "./LoginPresentation";
+import { useDispatch } from "react-redux";
+import type { AppDispatch } from "@/Redux/store";
+import { login } from "@/Redux/Slices/AuthSlice";
+import { useNavigate } from "react-router-dom";
 
 interface LoginData {
   email: string;
@@ -9,6 +13,9 @@ interface LoginData {
 
 function Login() {
   
+    // Typed dispatch so TS knows the shape of dispatch and payloads
+    const dispatch = useDispatch<AppDispatch>();
+    const navigate = useNavigate();
 
   // Typed useState generics
   const [isLoading, setIsLoading] = useState<boolean>(false);
@@ -46,10 +53,21 @@ function Login() {
 
     try {
       console.log(loginData.email, loginData.password);
-      // TODO: dispatch login action or API call here
+      
+      // unwrap returns only fulfilled payload and remove payload 
+      const apiResponse = await dispatch(login(loginData)).unwrap();
+      console.log("apiResponse",apiResponse)
+
+      if(apiResponse?.data?.success){
+        navigate('/');
+        setLoginData({
+        email: '',
+        password: ''
+      });
+      return;
+      }
     } catch (error) {
-      console.error("Login failed", error);
-      toast.error("Login failed. Please try again.");
+      console.log("Login failed", error);
     } finally {
       setIsLoading(false);
     }

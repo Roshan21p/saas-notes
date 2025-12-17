@@ -1,4 +1,5 @@
-import { Mail, Lock, Loader2 } from "lucide-react";
+import Layout from "@/Layout/Layout";
+import { Mail, Lock, Loader2, ArrowRight } from "lucide-react";
 import type { ChangeEvent, FormEvent } from "react";
 
 type DemoCredentialType =
@@ -25,125 +26,163 @@ export default function LoginPresentation({
   const { email, password } = loginData;
 
   return (
-    <div className="min-h-screen bg-linear-to-br from-blue-50 to-indigo-50 flex items-center justify-center p-4">
-      <div className="bg-white rounded-2xl shadow-2xl p-8 max-w-md w-full">
-        {/* Header */}
-        <div className="text-center mb-8">
-          <h1 className="text-3xl font-bold bg-linear-to-r from-blue-600 to-indigo-600 bg-clip-text text-transparent mb-2">
-            SaaS Notes
-          </h1>
-          <p className="text-slate-600">Sign in to your account</p>
-        </div>
-
-        {/* Demo Credentials */}
-        <div className="mb-6 p-4 bg-blue-50 border border-blue-200 rounded-lg">
-          <p className="text-sm font-medium text-slate-700 mb-2">
-            Demo Credentials:
-          </p>
-          <div className="space-y-2">
-            <button
-              onClick={() => fillDemoCredentials("acme-admin")}
-              className="w-full text-left px-3 py-2 bg-white rounded border border-slate-200 hover:border-blue-400 transition text-sm"
-            >
-              <span className="font-medium text-slate-900">Acme Admin:</span>
-              <span className="text-slate-600 ml-2">admin@acme.test</span>
-            </button>
-            <button
-              onClick={() => fillDemoCredentials("acme-member")}
-              className="w-full text-left px-3 py-2 bg-white rounded border border-slate-200 hover:border-blue-400 transition text-sm"
-            >
-              <span className="font-medium text-slate-900">Acme Member:</span>
-              <span className="text-slate-600 ml-2">user@acme.test</span>
-            </button>
-            <button
-              onClick={() => fillDemoCredentials("globex-admin")}
-              className="w-full text-left px-3 py-2 bg-white rounded border border-slate-200 hover:border-blue-400 transition text-sm"
-            >
-              <span className="font-medium text-slate-900">Globex Admin:</span>
-              <span className="text-slate-600 ml-2">admin@globex.test</span>
-            </button>
-            <button
-              onClick={() => fillDemoCredentials("globex-admin")}
-              className="w-full text-left px-3 py-2 bg-white rounded border border-slate-200 hover:border-blue-400 transition text-sm"
-            >
-              <span className="font-medium text-slate-900">Globex Member:</span>
-              <span className="text-slate-600 ml-2">user@globex.test</span>
-            </button>
+    <Layout>
+      <div className="flex-1 flex items-center justify-center px-4 py-8">
+        <div className="w-full max-w-5xl grid md:grid-cols-2 gap-8 items-center">
+          {/* LEFT SIDE */}
+          <div className="hidden md:block space-y-6">
+            <h1 className="text-5xl font-extrabold text-slate-900">
+              Welcome
+              <span className="block bg-linear-to-r from-blue-600 to-indigo-600 bg-clip-text text-transparent">
+                Back!
+              </span>
+            </h1>
+            <p className="text-lg text-slate-600">
+              Sign in to collaborate with your team in a secure multi-tenant
+              workspace.
+            </p>
           </div>
-          <p className="text-xs text-slate-500 mt-2">Password: password</p>
-        </div>
 
-        {/* Login Form */}
-        <form className="space-y-6" onSubmit={handleFormSubmit}>
-          {/* Email Input */}
-          <div>
-            <label
-              htmlFor="email"
-              className="block text-sm font-medium text-slate-700 mb-2"
-            >
-              Email Address
-            </label>
-            <div className="relative">
-              <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                <Mail className="text-slate-400" size={20} />
+          {/* RIGHT SIDE – FORM */}
+          <div className="bg-white rounded-2xl shadow-xl p-8 border border-slate-200">
+            <div className="mb-6">
+              <h2 className="text-2xl font-bold text-slate-900">Sign In</h2>
+              <p className="text-sm text-slate-600">
+                Enter your credentials to continue
+              </p>
+            </div>
+
+            {/* ✅ FORM */}
+            <form className="space-y-5" onSubmit={handleFormSubmit}>
+              {/* Email */}
+              <div>
+                <label className="block text-sm font-medium text-slate-700 mb-2">
+                  Email Address
+                </label>
+                <div className="relative">
+                  <Mail
+                    className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400"
+                    size={18}
+                  />
+                  <input
+                    name="email"
+                    type="email"
+                    value={email}
+                    onChange={handleUserInput}
+                    disabled={isLoading}
+                    className="w-full pl-10 pr-3 py-2.5 border rounded-lg focus:ring-2 focus:ring-blue-500 text-sm"
+                    placeholder="you@company.com"
+                  />
+                </div>
               </div>
-              <input
-                id="email"
-                name="email"
-                type="email"
-                value={email}
-                onChange={handleUserInput}
-                className="block w-full pl-10 pr-3 py-3 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none transition"
-                placeholder="you@test.com"
+
+              {/* Password */}
+              <div>
+                <label className="block text-sm font-medium text-slate-700 mb-2">
+                  Password
+                </label>
+                <div className="relative">
+                  <Lock
+                    className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400"
+                    size={18}
+                  />
+                  <input
+                    name="password"
+                    type="password"
+                    value={password}
+                    onChange={handleUserInput}
+                    disabled={isLoading}
+                    className="w-full pl-10 pr-3 py-2.5 border rounded-lg focus:ring-2 focus:ring-blue-500 text-sm"
+                    placeholder="••••••••"
+                  />
+                </div>
+              </div>
+
+              {/* Submit */}
+              <button
+                type="submit"
                 disabled={isLoading}
-                autoComplete="email"
-              />
+                className="w-full py-3 bg-linear-to-r from-blue-600 to-indigo-600 text-white font-semibold rounded-lg flex items-center justify-center gap-2 disabled:opacity-50 cursor-pointer"
+              >
+                {isLoading ? (
+                  <>
+                    <Loader2 className="animate-spin" size={18} />
+                    Signing in...
+                  </>
+                ) : (
+                  <>
+                    Sign In
+                    <ArrowRight size={18} />
+                  </>
+                )}
+              </button>
+            </form>
+
+            {/* Divider */}
+            <div className="relative my-6">
+              <div className="absolute inset-0 flex items-center">
+                <div className="w-full border-t"></div>
+              </div>
+              <div className="relative text-xs text-center">
+                <span className="px-2 bg-white text-slate-500">
+                  OR TRY DEMO ACCOUNTS
+                </span>
+              </div>
+            </div>
+
+            {/* Demo Accounts */}
+            {/* Demo Credentials */}
+            <div className="space-y-2">
+              <div className="grid grid-cols-2 gap-2">
+                <button
+                  type="button"
+                  onClick={() => fillDemoCredentials("acme-admin")}
+                  className="text-left px-3 py-2 bg-linear-to-br from-blue-50 to-blue-100 rounded-lg border border-blue-200 hover:border-blue-400 hover:shadow-md transition text-xs cursor-pointer"
+                >
+                  <div className="font-semibold text-blue-900">Acme Admin</div>
+                  <div className="text-blue-700 truncate">admin@acme.test</div>
+                </button>
+                <button
+                  type="button"
+                  onClick={() => fillDemoCredentials("acme-member")}
+                  className="text-left px-3 py-2 bg-linear-to-br from-indigo-50 to-indigo-100 rounded-lg border border-indigo-200 hover:border-indigo-400 hover:shadow-md transition text-xs cursor-pointer"
+                >
+                  <div className="font-semibold text-indigo-900">
+                    Acme Member
+                  </div>
+                  <div className="text-indigo-700 truncate">user@acme.test</div>
+                </button>
+                <button
+                  type="button"
+                  onClick={() => fillDemoCredentials("globex-admin")}
+                  className="text-left px-3 py-2 bg-linear-to-br from-purple-50 to-purple-100 rounded-lg border border-purple-200 hover:border-purple-400 hover:shadow-md transition text-xs cursor-pointer"
+                >
+                  <div className="font-semibold text-purple-900">
+                    Globex Admin
+                  </div>
+                  <div className="text-purple-700 truncate">
+                    admin@globex.test
+                  </div>
+                </button>
+                <button
+                  type="button"
+                  onClick={() => fillDemoCredentials("globex-member")}
+                  className="text-left px-3 py-2 bg-linear-to-br from-pink-50 to-pink-100 rounded-lg border border-pink-200 hover:border-pink-400 hover:shadow-md transition text-xs cursor-pointer"
+                >
+                  <div className="font-semibold text-pink-900">
+                    Globex Member
+                  </div>
+                  <div className="text-pink-700 truncate">user@globex.test</div>
+                </button>
+              </div>
+              <p className="text-xs text-center text-slate-500 mt-2">
+                All demo accounts use password:{" "}
+                <span className="font-semibold">password</span>
+              </p>
             </div>
           </div>
-
-          {/* Password Input */}
-          <div>
-            <label
-              htmlFor="password"
-              className="block text-sm font-medium text-slate-700 mb-2"
-            >
-              Password
-            </label>
-            <div className="relative">
-              <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                <Lock className="text-slate-400" size={20} />
-              </div>
-              <input
-                id="password"
-                name="password"
-                type="password"
-                value={password}
-                onChange={handleUserInput}
-                className="block w-full pl-10 pr-3 py-3 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none transition"
-                placeholder="••••••••"
-                disabled={isLoading}
-                autoComplete="current-password"
-              />
-            </div>
-          </div>
-
-          {/* Submit Button */}
-          <button
-            type="submit"
-            disabled={isLoading}
-            className="w-full cursor-pointer py-3 px-4 bg-linear-to-r from-blue-600 to-indigo-600 text-white font-semibold rounded-lg hover:from-blue-700 hover:to-indigo-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 transition disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center space-x-2"
-          >
-            {isLoading ? (
-              <>
-                <Loader2 className="animate-spin" size={20} />
-                <span>Login</span>
-              </>
-            ) : (
-              <span>Login</span>
-            )}
-          </button>
-        </form>
+        </div>
       </div>
-    </div>
+    </Layout>
   );
 }
