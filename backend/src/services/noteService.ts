@@ -16,6 +16,7 @@ export interface userData {
 }
 
 export const createNoteService = async (data: noteInput, user: userData) => {
+
   try {
     const { title, content } = data || {}; // Prevent destructure error
     const { userId, tenantId } = user;
@@ -67,7 +68,7 @@ export const createNoteService = async (data: noteInput, user: userData) => {
 
 export const listNotesService = async (user: userData) => {
   try {
-    const { userId, tenantId, role } = user || {}; // Prevent destructure error
+    const { tenantId, role } = user || {}; // Prevent destructure error
 
     if (role === "Member") {
       throw new AppError(403, "Member is not allowed to see all the notes");

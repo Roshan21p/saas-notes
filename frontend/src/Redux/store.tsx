@@ -1,10 +1,13 @@
 import { configureStore } from '@reduxjs/toolkit'
 import AuthSliceReducer from "./Slices/AuthSlice"
+import NoteSliceReducer from "./Slices/NoteSlice"
 
 
 export const store = configureStore({
     reducer: {
-        auth: AuthSliceReducer
+        // use the reducer function from each slice object
+        auth: AuthSliceReducer,
+        notes : NoteSliceReducer,  
     },
     devTools: true
 })

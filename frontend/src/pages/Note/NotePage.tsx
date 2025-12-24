@@ -2,8 +2,11 @@ import ActionButtons from "@/components/NotePage/ActionButtons";
 import NoteForm from "@/components/NotePage/NoteForm";
 import TenantHeader from "@/components/NotePage/TenantHeader";
 import Layout from "@/Layout/Layout";
+import { createNote } from "@/Redux/Slices/NoteSlice";
+import type { AppDispatch, RootState } from "@/Redux/store";
 import { useState, type ChangeEvent, type FormEvent } from "react";
 import toast from "react-hot-toast";
+import { useDispatch, useSelector } from "react-redux";
 
 interface NoteFormData {
   title: string;
@@ -11,7 +14,9 @@ interface NoteFormData {
 }
 
 function NotePage() {
-  const [isLoading, setIsLoading] = useState(false);
+
+  const dispatch = useDispatch<AppDispatch>();
+  const isLoading = useSelector( (state: RootState) => state.notes.isLoading);
 
   const [formData, setFormData] = useState<NoteFormData>({
     title: "",
@@ -32,7 +37,7 @@ function NotePage() {
     });
   }
   // Form submit handler typed with FormEvent<HTMLFormElement> for accurate form event typing
-  function handleFormSubmit(e: FormEvent<HTMLFormElement>) {
+  async function handleFormSubmit(e: FormEvent<HTMLFormElement>) {
     e.preventDefault();
 
     if (!formData.title.trim()) {
@@ -45,14 +50,21 @@ function NotePage() {
       return;
     }
 
-    setIsLoading(true);
 
     try {
-      // TODO : using redux
+      // unwrap returns only fulfilled payload and remove payload 
+            const apiResponse = await dispatch(createNote(formData)).unwrap();
+      
+            if(apiResponse?.success){
+              setFormData({
+                title: '',
+                content: ''
+              })
+              setShowForm(false);
+            return;
+            }
     } catch (error) {
       console.log("Create note failed", error);
-    } finally {
-      setIsLoading(false);
     }
   }
 

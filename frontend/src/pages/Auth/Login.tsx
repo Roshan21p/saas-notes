@@ -54,7 +54,6 @@ function Login() {
     try {      
       // unwrap returns only fulfilled payload and remove payload 
       const apiResponse = await dispatch(login(loginData)).unwrap();
-      console.log("apiResponse",apiResponse)
 
       if(apiResponse?.data?.success){
         navigate('/');

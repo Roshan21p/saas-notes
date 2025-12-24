@@ -13,11 +13,15 @@ const noteSchema = new Schema<INote>(
   {
     title: {
       type: String,
-      required: true,
+      trim: true,
+      required: [true, 'The title field is required'],
+      minlength: [3, 'Title field required atleast 3 characters long']
     },
     content: {
       type: String,
+      trim: true,
       required: true,
+      minlength: [5, 'Content field required atleast 5 characters long']
     },
     tenantId: {
       type: Schema.Types.ObjectId,
