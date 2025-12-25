@@ -19,7 +19,7 @@ interface Note {
 
 // Redux state type
 interface NoteState {
-  note: Note[];
+  notes: Note[];
   isLoading: boolean;
 }
 
@@ -33,7 +33,7 @@ interface CreateNoteResponse {
 
 
 const initialState: NoteState = {
-  note: [] ,
+  notes: [] ,
   isLoading: false,
 };
 
@@ -62,24 +62,60 @@ export const createNote = createAsyncThunk<CreateNoteResponse, CreateNotePayload
   }
 );
 
+export const fetchMyNotes = createAsyncThunk('/notes/me', async (_, { rejectWithValue }) => {
+  try {
+    const response = apiClient.get('/notes/me');
+    toast.promise(response,  {
+      loading : "Fetching the notes...",
+      success: (resolvedPromise) => {
+        return resolvedPromise?.data?.message;
+      },
+      error: (error) => {
+        return error?.response?.data?.messsage || error?.message;
+      },
+    })
+    const apiResponse = await response;
+    return apiResponse.data;
+
+  } catch (error: any) {
+    console.log("Failed to fetch the notes.", error);
+    return rejectWithValue(error?.response?.data?.message || error?.message);
+  }
+})
+
 const NoteSlice = createSlice({
   name: "notes",
   initialState,
   reducers: {},
   extraReducers: (builder) => {
     builder
+    // Create note builder case
       .addCase(createNote.pending, (state) => {
         state.isLoading = true;
       })
       .addCase(createNote.fulfilled, (state, action) => {
         state.isLoading = false;
         //state.note = [action.payload.data];   // one way not recommended
-        state.note.push(action.payload.data);  
+        state.notes.push(action.payload.data);  
 
       })
       .addCase(createNote.rejected, (state) => {
         state.isLoading = false;
-      });
+      })
+
+
+        // fetch notes builder case
+      .addCase(fetchMyNotes.pending, (state) => {
+        state.isLoading = true;
+      })
+      .addCase(fetchMyNotes.fulfilled, (state, action) => {
+        state.isLoading = false;
+        state.notes.push(action.payload.data);  
+
+      })
+      .addCase(fetchMyNotes.rejected, (state) => {
+        state.isLoading = false;
+      })
   },
 });
 

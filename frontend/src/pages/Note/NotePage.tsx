@@ -2,9 +2,9 @@ import ActionButtons from "@/components/NotePage/ActionButtons";
 import NoteForm from "@/components/NotePage/NoteForm";
 import TenantHeader from "@/components/NotePage/TenantHeader";
 import Layout from "@/Layout/Layout";
-import { createNote } from "@/Redux/Slices/NoteSlice";
+import { createNote, fetchMyNotes } from "@/Redux/Slices/NoteSlice";
 import type { AppDispatch, RootState } from "@/Redux/store";
-import { useState, type ChangeEvent, type FormEvent } from "react";
+import { useEffect, useState, type ChangeEvent, type FormEvent } from "react";
 import toast from "react-hot-toast";
 import { useDispatch, useSelector } from "react-redux";
 
@@ -14,9 +14,8 @@ interface NoteFormData {
 }
 
 function NotePage() {
-
   const dispatch = useDispatch<AppDispatch>();
-  const isLoading = useSelector( (state: RootState) => state.notes.isLoading);
+  const { notes , isLoading }= useSelector((state: RootState) => state.notes);
 
   const [formData, setFormData] = useState<NoteFormData>({
     title: "",
@@ -24,6 +23,10 @@ function NotePage() {
   });
 
   const [showForm, setShowForm] = useState(false);
+
+   useEffect(() => {
+    dispatch(fetchMyNotes());
+}, [dispatch]);
 
   // Handler for input changes, typed for input element change event
   function handleFormInput(
@@ -50,19 +53,18 @@ function NotePage() {
       return;
     }
 
-
     try {
-      // unwrap returns only fulfilled payload and remove payload 
-            const apiResponse = await dispatch(createNote(formData)).unwrap();
-      
-            if(apiResponse?.success){
-              setFormData({
-                title: '',
-                content: ''
-              })
-              setShowForm(false);
-            return;
-            }
+      // unwrap returns only fulfilled payload and remove payload
+      const apiResponse = await dispatch(createNote(formData)).unwrap();
+
+      if (apiResponse?.success) {
+        setFormData({
+          title: "",
+          content: "",
+        });
+        setShowForm(false);
+        return;
+      }
     } catch (error) {
       console.log("Create note failed", error);
     }
@@ -74,7 +76,10 @@ function NotePage() {
         <div className="max-w-6xl mx-auto px-6 py-8">
           <div className="mb-10 flex flex-col items-center gap-6">
             <TenantHeader tenantName={"Acme Corporation"} />
-            <ActionButtons onNewNote={() => setShowForm(true)} />
+            <ActionButtons
+              onNewNote={() => setShowForm(true)}
+              onFetchNotes={() => dispatch(fetchMyNotes())}
+            />
           </div>
 
           {showForm && (

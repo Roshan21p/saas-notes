@@ -13,7 +13,7 @@ function App() {
 
               <Route path='/auth/login' element={<Login />} />
 
-               <Route path='/note' element={<NotesPage />} />
+               <Route path='/notes' element={<NotesPage />} />
 
         </Routes>
      </>
