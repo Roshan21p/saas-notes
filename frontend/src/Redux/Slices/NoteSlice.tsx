@@ -1,20 +1,11 @@
 import apiClient from "@/config/axiosConfig";
+import type { Note } from "@/types/note";
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import toast from "react-hot-toast";
 
 interface CreateNotePayload {
   title: string;
   content: string;
-}
-
-interface Note {
-  _id: string;
-  title: string;
-  content: string;
-  tenantId: string;
-  userId: string;
-  createdAt: string;
-  updatedAt: string;
 }
 
 // Redux state type
@@ -86,7 +77,11 @@ export const fetchMyNotes = createAsyncThunk('/notes/me', async (_, { rejectWith
 const NoteSlice = createSlice({
   name: "notes",
   initialState,
-  reducers: {},
+  reducers: {
+    clearNotes : (state) => {
+      state.notes = [];
+    }
+  },
   extraReducers: (builder) => {
     builder
     // Create note builder case
@@ -96,7 +91,7 @@ const NoteSlice = createSlice({
       .addCase(createNote.fulfilled, (state, action) => {
         state.isLoading = false;
         //state.note = [action.payload.data];   // one way not recommended
-        state.notes.push(action.payload.data);  
+        state.notes.unshift(action.payload.data);  
 
       })
       .addCase(createNote.rejected, (state) => {
@@ -110,7 +105,7 @@ const NoteSlice = createSlice({
       })
       .addCase(fetchMyNotes.fulfilled, (state, action) => {
         state.isLoading = false;
-        state.notes.push(action.payload.data);  
+        state.notes = action.payload.data;  
 
       })
       .addCase(fetchMyNotes.rejected, (state) => {
@@ -118,5 +113,7 @@ const NoteSlice = createSlice({
       })
   },
 });
+
+export const { clearNotes } = NoteSlice.actions;
 
 export default NoteSlice.reducer;

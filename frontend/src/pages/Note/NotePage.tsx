@@ -1,17 +1,15 @@
 import ActionButtons from "@/components/NotePage/ActionButtons";
 import NoteForm from "@/components/NotePage/NoteForm";
+import NotesList from "@/components/NotePage/NoteList";
 import TenantHeader from "@/components/NotePage/TenantHeader";
 import Layout from "@/Layout/Layout";
 import { createNote, fetchMyNotes } from "@/Redux/Slices/NoteSlice";
 import type { AppDispatch, RootState } from "@/Redux/store";
+import type { NoteFormData } from "@/types/note";
 import { useEffect, useState, type ChangeEvent, type FormEvent } from "react";
 import toast from "react-hot-toast";
 import { useDispatch, useSelector } from "react-redux";
 
-interface NoteFormData {
-  title: string;
-  content: string;
-}
 
 function NotePage() {
   const dispatch = useDispatch<AppDispatch>();
@@ -94,6 +92,7 @@ function NotePage() {
               }}
             />
           )}
+          <NotesList notes={notes} onEdit={() => {}} onDelete={() => {}} />
         </div>
       </div>
     </Layout>

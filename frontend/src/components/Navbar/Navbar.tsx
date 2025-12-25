@@ -1,13 +1,16 @@
 // src/components/Navbar.tsx
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { useSelector, useDispatch } from "react-redux";
 import type { RootState, AppDispatch } from "@/Redux/store";
 import { logout } from "@/Redux/Slices/AuthSlice"; // if you have / will add
+import { clearNotes } from "@/Redux/Slices/NoteSlice";
 
 export function Navbar() {
   // AppDispatch -> Typed dispatch function that understand async thunks
   const dispatch = useDispatch<AppDispatch>();
+
+  const navigate = useNavigate();
 
   // RootState -> Type of the entire Redux store
   const isAuthenticated = useSelector(
@@ -16,6 +19,8 @@ export function Navbar() {
 
   const handleLogout = () => {
     dispatch(logout()); // clears state + localStorage
+    dispatch(clearNotes());
+    navigate('/');
   };
 
   return (
