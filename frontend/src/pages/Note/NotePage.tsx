@@ -3,28 +3,34 @@ import NoteForm from "@/components/NotePage/NoteForm";
 import NotesList from "@/components/NotePage/NoteList";
 import TenantHeader from "@/components/NotePage/TenantHeader";
 import Layout from "@/Layout/Layout";
-import { createNote, fetchMyNotes } from "@/Redux/Slices/NoteSlice";
+import {
+  createNote,
+  fetchMyNotes,
+  updateMyNotes,
+} from "@/Redux/Slices/NoteSlice";
 import type { AppDispatch, RootState } from "@/Redux/store";
 import type { NoteFormData } from "@/types/note";
 import { useEffect, useState, type ChangeEvent, type FormEvent } from "react";
 import toast from "react-hot-toast";
 import { useDispatch, useSelector } from "react-redux";
 
-
 function NotePage() {
   const dispatch = useDispatch<AppDispatch>();
-  const { notes , isLoading }= useSelector((state: RootState) => state.notes);
+  const { notes, isLoading } = useSelector((state: RootState) => state.notes);
 
   const [formData, setFormData] = useState<NoteFormData>({
     title: "",
     content: "",
   });
 
+  // Track note being edited; null means create mode
+  const [editingNoteId, setEditingNoteId] = useState<string | null>(null);
+
   const [showForm, setShowForm] = useState(false);
 
-   useEffect(() => {
-    dispatch(fetchMyNotes());
-}, [dispatch]);
+  useEffect(() => {
+    dispatch(fetchMyNotes()).unwrap();
+  }, [dispatch]);
 
   // Handler for input changes, typed for input element change event
   function handleFormInput(
@@ -37,6 +43,14 @@ function NotePage() {
       [name]: value,
     });
   }
+
+  // When user clicks "Edit" on a note
+  function handleEdit(note: { _id: string; title: string; content: string }) {
+    setEditingNoteId(note._id);
+    setFormData({ title: note.title, content: note.title });
+    setShowForm(true);
+  }
+
   // Form submit handler typed with FormEvent<HTMLFormElement> for accurate form event typing
   async function handleFormSubmit(e: FormEvent<HTMLFormElement>) {
     e.preventDefault();
@@ -52,16 +66,34 @@ function NotePage() {
     }
 
     try {
-      // unwrap returns only fulfilled payload and remove payload
-      const apiResponse = await dispatch(createNote(formData)).unwrap();
+      if (editingNoteId) {
+        // Update note
+        const apiResponse = await dispatch(
+          updateMyNotes({ id: editingNoteId, ...formData })
+        ).unwrap();
 
-      if (apiResponse?.success) {
-        setFormData({
-          title: "",
-          content: "",
-        });
-        setShowForm(false);
-        return;
+        if (apiResponse?.success) {
+          setFormData({
+            title: "",
+            content: "",
+          });
+          setEditingNoteId(null);
+          setShowForm(false);
+          return;
+        }
+      } else {
+        // Create new note
+        // unwrap returns only fulfilled payload and remove payload
+        const apiResponse = await dispatch(createNote(formData)).unwrap();
+
+        if (apiResponse?.success) {
+          setFormData({
+            title: "",
+            content: "",
+          });
+          setShowForm(false);
+          return;
+        }
       }
     } catch (error) {
       console.log("Create note failed", error);
@@ -75,7 +107,11 @@ function NotePage() {
           <div className="mb-10 flex flex-col items-center gap-6">
             <TenantHeader tenantName={"Acme Corporation"} />
             <ActionButtons
-              onNewNote={() => setShowForm(true)}
+              onNewNote={() => {
+                setEditingNoteId(null);
+                setFormData({ title: "", content: " " });
+                setShowForm(true);
+              }}
               onFetchNotes={() => dispatch(fetchMyNotes())}
             />
           </div>
@@ -88,11 +124,13 @@ function NotePage() {
               isLoading={isLoading}
               onCancel={() => {
                 setShowForm(false);
+                setEditingNoteId(null);
                 setFormData({ title: "", content: "" });
               }}
+              submitButtonLabel={editingNoteId ? "Update Note" : "Create Note"}
             />
           )}
-          <NotesList notes={notes} onEdit={() => {}} onDelete={() => {}} />
+          <NotesList notes={notes} onEdit={handleEdit} onDelete={() => {}} />
         </div>
       </div>
     </Layout>

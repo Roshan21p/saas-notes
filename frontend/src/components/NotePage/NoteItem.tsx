@@ -8,8 +8,6 @@ interface NoteItemProps {
   onDelete: (id: string) => void;
 }
 
-
-
 export function NoteItem({ note, userName, onEdit, onDelete }: NoteItemProps) {
   return (
     <div
@@ -29,7 +27,9 @@ export function NoteItem({ note, userName, onEdit, onDelete }: NoteItemProps) {
               {userName}
             </span>
             <span>•</span>
-            <span>{new Date(note.createdAt).toLocaleDateString()}</span>
+            <span>
+              {new Date(note.createdAt ?? note.updatedAt).toLocaleDateString()}
+            </span>
           </div>
         </div>
 

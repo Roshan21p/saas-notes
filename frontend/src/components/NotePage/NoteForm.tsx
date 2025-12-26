@@ -8,6 +8,7 @@ interface NoteFormProps {
   formData: { title: string; content: string };
   isLoading: boolean;
   onCancel: () => void;
+  submitButtonLabel?: string;
 }
 
 function NoteForm({
@@ -16,6 +17,7 @@ function NoteForm({
   formData,
   isLoading,
   onCancel,
+  submitButtonLabel,
 }: NoteFormProps) {
   return (
     <form
@@ -53,7 +55,7 @@ function NoteForm({
           disabled={isLoading}
           className="px-6 py-3 bg-linear-to-r from-indigo-600 to-blue-600 text-white rounded-xl font-semibold shadow-lg hover:shadow-xl hover:scale-105 transition-all duration-200 cursor-pointer"
         >
-          {isLoading ? "Saving..." : "Create Note"}
+          {isLoading ? "Saving..." : submitButtonLabel}
         </button>
 
         <button
