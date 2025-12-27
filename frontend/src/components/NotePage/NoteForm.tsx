@@ -9,6 +9,7 @@ interface NoteFormProps {
   isLoading: boolean;
   onCancel: () => void;
   submitButtonLabel?: string;
+  formTitle: string;
 }
 
 function NoteForm({
@@ -18,6 +19,7 @@ function NoteForm({
   isLoading,
   onCancel,
   submitButtonLabel,
+  formTitle,
 }: NoteFormProps) {
   return (
     <form
@@ -26,7 +28,7 @@ function NoteForm({
     >
       <div className="flex items-center gap-3 mb-6">
         <div className="w-1 h-8 bg-linear-to-b from-indigo-600 to-blue-600 rounded-full"></div>
-        <h3 className="text-xl font-bold text-gray-900">{"Create New Note"}</h3>
+        <h3 className="text-xl font-bold text-gray-900">{formTitle}</h3>
       </div>
 
       <input

@@ -6,9 +6,16 @@ interface NoteItemProps {
   userName: string;
   onEdit: (note: Note) => void;
   onDelete: (id: string) => void;
+  isLoading: boolean;
 }
 
-export function NoteItem({ note, userName, onEdit, onDelete }: NoteItemProps) {
+export function NoteItem({
+  note,
+  userName,
+  onEdit,
+  onDelete,
+  isLoading,
+}: NoteItemProps) {
   return (
     <div
       key={note._id}
@@ -36,6 +43,7 @@ export function NoteItem({ note, userName, onEdit, onDelete }: NoteItemProps) {
         <div className="flex gap-2 ml-4">
           <button
             onClick={() => onEdit(note)}
+            disabled={isLoading}
             className="p-3 text-indigo-600 hover:bg-indigo-100 rounded-xl transition-all duration-200 hover:scale-110 shadow-sm cursor-pointer"
           >
             <Edit2 size={18} />
@@ -43,6 +51,7 @@ export function NoteItem({ note, userName, onEdit, onDelete }: NoteItemProps) {
 
           <button
             onClick={() => onDelete(note?._id)}
+            disabled={isLoading}
             className="p-3 text-red-600 hover:bg-red-100 rounded-xl transition-all duration-200 hover:scale-110 shadow-sm cursor-pointer"
           >
             <Trash2 size={18} />

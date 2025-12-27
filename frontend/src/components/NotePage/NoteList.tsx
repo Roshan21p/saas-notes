@@ -8,8 +8,9 @@ interface NotesListProps {
   notes: Note[];
   onEdit: (note: Note) => void;
   onDelete: (id: string) => void;
+  isLoading: boolean
 }
-function NotesList({ notes, onEdit, onDelete }: NotesListProps) { 
+function NotesList({ notes, onEdit, onDelete, isLoading }: NotesListProps) { 
 
     const name = useSelector((state : RootState) => state?.auth?.userData?.name)
 
@@ -27,7 +28,7 @@ function NotesList({ notes, onEdit, onDelete }: NotesListProps) {
   return (
     <div className="space-y-5">
       {notes.map((note) => (
-        <NoteItem  key={note._id} note={note} userName={name || 'Unknown'} onEdit={onEdit} onDelete={onDelete} />
+        <NoteItem  key={note._id} note={note} userName={name || 'Unknown'} onEdit={onEdit} onDelete={onDelete} isLoading={isLoading} />
       ))}
     </div>
   );

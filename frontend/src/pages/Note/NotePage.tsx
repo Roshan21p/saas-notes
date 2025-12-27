@@ -5,11 +5,13 @@ import TenantHeader from "@/components/NotePage/TenantHeader";
 import Layout from "@/Layout/Layout";
 import {
   createNote,
+  deleteNote,
   fetchMyNotes,
   updateMyNotes,
 } from "@/Redux/Slices/NoteSlice";
 import type { AppDispatch, RootState } from "@/Redux/store";
 import type { NoteFormData } from "@/types/note";
+import confirmDelete from "@/utils/ConfirmDelete";
 import { useEffect, useState, type ChangeEvent, type FormEvent } from "react";
 import toast from "react-hot-toast";
 import { useDispatch, useSelector } from "react-redux";
@@ -23,13 +25,16 @@ function NotePage() {
     content: "",
   });
 
+
   // Track note being edited; null means create mode
   const [editingNoteId, setEditingNoteId] = useState<string | null>(null);
 
   const [showForm, setShowForm] = useState(false);
 
   useEffect(() => {
-    dispatch(fetchMyNotes()).unwrap();
+    if(notes.length === 0){
+      dispatch(fetchMyNotes()).unwrap();
+    }
   }, [dispatch]);
 
   // Handler for input changes, typed for input element change event
@@ -47,8 +52,19 @@ function NotePage() {
   // When user clicks "Edit" on a note
   function handleEdit(note: { _id: string; title: string; content: string }) {
     setEditingNoteId(note._id);
-    setFormData({ title: note.title, content: note.title });
+    setFormData({ title: note.title, content: note.content });
     setShowForm(true);
+  }
+
+  // Handle delete note function
+  async function handleDelete(id: string) {
+      confirmDelete(async () => {
+        try {
+        await dispatch(deleteNote(id)).unwrap();
+      } catch (error) {
+        console.error("Delete failed", error);
+      }
+      }, id)
   }
 
   // Form submit handler typed with FormEvent<HTMLFormElement> for accurate form event typing
@@ -71,6 +87,8 @@ function NotePage() {
         const apiResponse = await dispatch(
           updateMyNotes({ id: editingNoteId, ...formData })
         ).unwrap();
+
+        console.log(apiResponse)
 
         if (apiResponse?.success) {
           setFormData({
@@ -109,10 +127,11 @@ function NotePage() {
             <ActionButtons
               onNewNote={() => {
                 setEditingNoteId(null);
-                setFormData({ title: "", content: " " });
+                setFormData({ title: "", content: "" });
                 setShowForm(true);
               }}
               onFetchNotes={() => dispatch(fetchMyNotes())}
+              isLoading={isLoading}
             />
           </div>
 
@@ -128,9 +147,15 @@ function NotePage() {
                 setFormData({ title: "", content: "" });
               }}
               submitButtonLabel={editingNoteId ? "Update Note" : "Create Note"}
+              formTitle={editingNoteId ? "Edit Note" : "Create New Note"} 
             />
           )}
-          <NotesList notes={notes} onEdit={handleEdit} onDelete={() => {}} />
+          <NotesList
+            notes={notes}
+            onEdit={handleEdit}
+            onDelete={handleDelete}
+            isLoading={isLoading}
+          />
         </div>
       </div>
     </Layout>

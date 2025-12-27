@@ -6,7 +6,6 @@ import NotesPage from './pages/Note/NotePage';
 function App() {
 
   return (
-     <>
         <Routes>
 
               <Route path='/' element={<HomePage />} />
@@ -16,7 +15,6 @@ function App() {
                <Route path='/notes' element={<NotesPage />} />
 
         </Routes>
-     </>
   )
 }
 

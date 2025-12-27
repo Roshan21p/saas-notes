@@ -11,7 +11,12 @@ createRoot(document.getElementById("root")!).render(
   <Provider store={store}>
     <BrowserRouter>
       <App />
-      <Toaster position="top-right" />
+      <Toaster
+        toastOptions={{
+          duration: 3000, // 3 seconds timeout for all toasts
+          position: "top-right"
+        }}
+      />
     </BrowserRouter>
   </Provider>
 );

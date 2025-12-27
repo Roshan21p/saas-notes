@@ -39,6 +39,12 @@ interface UpdateNoteResponse {
   data: Note;
 }
 
+interface DeleteNoteResponse {
+  success: boolean;
+  message: string;
+  data: { _id: string };
+}
+
 const initialState: NoteState = {
   notes: [],
   isLoading: false,
@@ -117,6 +123,31 @@ export const updateMyNotes = createAsyncThunk<
     return rejectWithValue(error?.response?.data?.message || error?.message);
   }
 });
+
+export const deleteNote = createAsyncThunk<
+  DeleteNoteResponse,
+  string,
+  { rejectValue: string }
+>("/notes/delete", async (id, { rejectWithValue }) => {
+  try {
+    const response = apiClient.delete(`/notes/${id}`);
+
+    toast.promise(response, {
+      loading: "Deleting the note...",
+      success: (resolvedPromise) => {
+        return resolvedPromise?.data?.message;
+      },
+      error: (error) => {
+        return error?.response?.data?.messsage || error?.message;
+      },
+    });
+    const apiResponse = await response;
+    return apiResponse.data;
+  } catch (error: any) {
+    console.log("Failed to delete the note", error);
+    return rejectWithValue(error?.response?.data?.message || error?.message);
+  }
+});
 const NoteSlice = createSlice({
   name: "notes",
   initialState,
@@ -152,16 +183,38 @@ const NoteSlice = createSlice({
         state.isLoading = false;
       })
 
-      // Create note case
+      // update note case
       .addCase(updateMyNotes.pending, (state) => {
         state.isLoading = true;
       })
       .addCase(updateMyNotes.fulfilled, (state, action) => {
+        state.isLoading = false;
+        // Replace existing note with updated one
+        const updatedNote = action.payload.data;
+        const index = state.notes.findIndex(
+          (note) => note._id === updatedNote._id
+        );
+        if (index !== -1) {
+          state.notes[index] = updatedNote;
+        }
+      })
+
+      .addCase(updateMyNotes.rejected, (state) => {
+        state.isLoading = false;
+      })
+
+      // delete note case
+      .addCase(deleteNote.pending, (state) => {
+        state.isLoading = true;
+      })
+      .addCase(deleteNote.fulfilled, (state, action) => {
         console.log("action", action);
         state.isLoading = false;
-        state.notes.unshift(action.payload.data);
+        state.notes = state.notes.filter(
+          (note) => note._id !== action.payload.data._id
+        );
       })
-      .addCase(updateMyNotes.rejected, (state) => {
+      .addCase(deleteNote.rejected, (state) => {
         state.isLoading = false;
       });
   },

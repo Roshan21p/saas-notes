@@ -4,6 +4,7 @@ export interface NoteFormData {
 }
 
 export interface Note {
+  id: string;
   _id: string;
   title: string;
   content: string;
