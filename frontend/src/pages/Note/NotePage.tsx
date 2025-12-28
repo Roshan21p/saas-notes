@@ -6,6 +6,7 @@ import Layout from "@/Layout/Layout";
 import {
   createNote,
   deleteNote,
+  fetchAllNotesAdmin,
   fetchMyNotes,
   updateMyNotes,
 } from "@/Redux/Slices/NoteSlice";
@@ -25,15 +26,16 @@ function NotePage() {
     content: "",
   });
 
-
   // Track note being edited; null means create mode
   const [editingNoteId, setEditingNoteId] = useState<string | null>(null);
 
   const [showForm, setShowForm] = useState(false);
 
   useEffect(() => {
-    if(notes.length === 0){
-      dispatch(fetchMyNotes()).unwrap();
+    console.log("note", notes.length);
+    if (notes.length === 0) {
+      console.log("note");
+      dispatch(fetchMyNotes());
     }
   }, [dispatch]);
 
@@ -58,13 +60,13 @@ function NotePage() {
 
   // Handle delete note function
   async function handleDelete(id: string) {
-      confirmDelete(async () => {
-        try {
+    confirmDelete(async () => {
+      try {
         await dispatch(deleteNote(id)).unwrap();
       } catch (error) {
         console.error("Delete failed", error);
       }
-      }, id)
+    }, id);
   }
 
   // Form submit handler typed with FormEvent<HTMLFormElement> for accurate form event typing
@@ -87,8 +89,6 @@ function NotePage() {
         const apiResponse = await dispatch(
           updateMyNotes({ id: editingNoteId, ...formData })
         ).unwrap();
-
-        console.log(apiResponse)
 
         if (apiResponse?.success) {
           setFormData({
@@ -131,6 +131,7 @@ function NotePage() {
                 setShowForm(true);
               }}
               onFetchNotes={() => dispatch(fetchMyNotes())}
+              onFetchNotesAdmin={() => dispatch(fetchAllNotesAdmin())}
               isLoading={isLoading}
             />
           </div>
@@ -147,7 +148,7 @@ function NotePage() {
                 setFormData({ title: "", content: "" });
               }}
               submitButtonLabel={editingNoteId ? "Update Note" : "Create Note"}
-              formTitle={editingNoteId ? "Edit Note" : "Create New Note"} 
+              formTitle={editingNoteId ? "Edit Note" : "Create New Note"}
             />
           )}
           <NotesList

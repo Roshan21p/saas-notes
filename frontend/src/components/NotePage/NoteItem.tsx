@@ -1,22 +1,19 @@
 import type { Note } from "@/types/note";
 import { Edit2, Trash2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { useSelector } from "react-redux";
+import type { RootState } from "@/Redux/store";
 
 interface NoteItemProps {
   note: Note;
-  userName: string;
   onEdit: (note: Note) => void;
   onDelete: (id: string) => void;
   isLoading: boolean;
 }
- 
-function NoteItem({
-  note,
-  userName,
-  onEdit,
-  onDelete,
-  isLoading,
-}: NoteItemProps) {
+
+function NoteItem({ note, onEdit, onDelete, isLoading }: NoteItemProps) {
+  const name = useSelector((state: RootState) => state?.auth?.userData?.name);
+
   return (
     <div
       key={note._id}
@@ -31,13 +28,11 @@ function NoteItem({
             {note.title}
           </h3>
 
-          <p className="text-gray-600 leading-relaxed mb-3">
-            {note.content}
-          </p>
+          <p className="text-gray-600 leading-relaxed mb-3">{note.content}</p>
 
           <div className="flex items-center gap-2 text-sm text-gray-500">
             <span className="px-3 py-1 bg-indigo-50 text-indigo-700 rounded-full font-medium">
-              {userName}
+              {note.userId.name || name}
             </span>
             <span>•</span>
             <span>

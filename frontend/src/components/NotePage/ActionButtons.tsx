@@ -6,12 +6,14 @@ import { Button } from "@/components/ui/button";
 interface ActionButtonsProps {
   onNewNote: () => void;
   onFetchNotes: () => void;
+  onFetchNotesAdmin: () => void;
   isLoading: boolean;
 }
 
 function ActionButtons({
   onNewNote,
   onFetchNotes,
+  onFetchNotesAdmin,
   isLoading,
 }: ActionButtonsProps) {
   const role = useSelector((state: RootState) => state.auth.role);
@@ -52,6 +54,7 @@ function ActionButtons({
           {/* All Notes */}
           <Button
             variant="outline"
+            onClick={onFetchNotesAdmin}
             disabled={isLoading}
             className="px-5 py-3 rounded-xl text-sm font-medium text-indigo-700 border-indigo-200 shadow-md hover:bg-indigo-50 hover:shadow-lg hover:scale-105 transition-all cursor-pointer"
           >

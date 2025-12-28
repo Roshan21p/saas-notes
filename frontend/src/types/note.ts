@@ -4,13 +4,14 @@ export interface NoteFormData {
 }
 
 export interface Note {
-  id: string;
   _id: string;
   title: string;
   content: string;
   tenantId: string;
-  userId: string;
   createdAt: Date;
   updatedAt: Date;
+  userId: {
+    _id: string;
+    name: string;
+  };
 }
-

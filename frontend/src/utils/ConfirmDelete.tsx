@@ -16,6 +16,7 @@ function confirmDelete(onConfirm: () => void, id: string) {
         <div className="flex justify-end gap-2">
           <Button
             variant="outline"
+            className="cursor-pointer"
             onClick={() => toast.dismiss(t.id)}
           >
             Cancel
@@ -23,6 +24,7 @@ function confirmDelete(onConfirm: () => void, id: string) {
 
           <Button
             variant="destructive"
+            className="cursor-pointer"
             onClick={() => {
               toast.dismiss(t.id);
               onConfirm();

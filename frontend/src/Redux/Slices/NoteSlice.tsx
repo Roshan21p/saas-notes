@@ -148,6 +148,32 @@ export const deleteNote = createAsyncThunk<
     return rejectWithValue(error?.response?.data?.message || error?.message);
   }
 });
+
+/*   Admin    */
+export const fetchAllNotesAdmin = createAsyncThunk<
+  FetchNoteResponse,
+  void,
+  { rejectValue: string }
+>("/notes", async (_, { rejectWithValue }) => {
+  try {
+    const response = apiClient.get("/notes");
+    toast.promise(response, {
+      loading: "Fetching the notes...",
+      success: (resolvedPromise) => {
+        return resolvedPromise?.data?.message;
+      },
+      error: (error) => {
+        return error?.response?.data?.messsage || error?.message;
+      },
+    });
+    const apiResponse = await response;
+    return apiResponse.data;
+  } catch (error: any) {
+    console.log("Failed to fetch the notes.", error);
+    return rejectWithValue(error?.response?.data?.message || error?.message);
+  }
+});
+
 const NoteSlice = createSlice({
   name: "notes",
   initialState,
@@ -171,7 +197,7 @@ const NoteSlice = createSlice({
         state.isLoading = false;
       })
 
-      // fetch notes case
+      // fetch My notes case
       .addCase(fetchMyNotes.pending, (state) => {
         state.isLoading = true;
       })
@@ -198,7 +224,6 @@ const NoteSlice = createSlice({
           state.notes[index] = updatedNote;
         }
       })
-
       .addCase(updateMyNotes.rejected, (state) => {
         state.isLoading = false;
       })
@@ -208,13 +233,25 @@ const NoteSlice = createSlice({
         state.isLoading = true;
       })
       .addCase(deleteNote.fulfilled, (state, action) => {
-        console.log("action", action);
         state.isLoading = false;
         state.notes = state.notes.filter(
           (note) => note._id !== action.payload.data._id
         );
       })
       .addCase(deleteNote.rejected, (state) => {
+        state.isLoading = false;
+      })
+
+      // fetch All notes case
+      .addCase(fetchAllNotesAdmin.pending, (state) => {
+        state.isLoading = true;
+      })
+      .addCase(fetchAllNotesAdmin.fulfilled, (state, action) => {
+        console.log(action);
+        state.isLoading = false;
+        state.notes = action.payload.data;
+      })
+      .addCase(fetchAllNotesAdmin.rejected, (state) => {
         state.isLoading = false;
       });
   },

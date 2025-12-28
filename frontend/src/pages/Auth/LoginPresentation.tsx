@@ -140,9 +140,7 @@ function LoginPresentation({
                   className="text-left px-3 py-2 bg-linear-to-br from-blue-50 to-blue-100 border-blue-200 hover:border-blue-400 hover:shadow-md text-xs cursor-pointer"
                 >
                   <div className="font-semibold text-blue-900">Acme Admin</div>
-                  <div className="text-blue-700 truncate">
-                    admin@acme.test
-                  </div>
+                  <div className="text-blue-700 truncate">admin@acme.test</div>
                 </Button>
 
                 <Button
@@ -154,9 +152,7 @@ function LoginPresentation({
                   <div className="font-semibold text-indigo-900">
                     Acme Member
                   </div>
-                  <div className="text-indigo-700 truncate">
-                    user@acme.test
-                  </div>
+                  <div className="text-indigo-700 truncate">user@acme.test</div>
                 </Button>
 
                 <Button
@@ -182,9 +178,7 @@ function LoginPresentation({
                   <div className="font-semibold text-pink-900">
                     Globex Member
                   </div>
-                  <div className="text-pink-700 truncate">
-                    user@globex.test
-                  </div>
+                  <div className="text-pink-700 truncate">user@globex.test</div>
                 </Button>
               </div>
 

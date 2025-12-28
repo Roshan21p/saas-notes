@@ -1,7 +1,5 @@
 import type { Note } from "@/types/note";
 import { Plus } from "lucide-react";
-import { useSelector } from "react-redux";
-import type { RootState } from "@/Redux/store";
 import NoteItem from "./NoteItem";
 
 interface NotesListProps {
@@ -12,7 +10,6 @@ interface NotesListProps {
 }
 function NotesList({ notes, onEdit, onDelete, isLoading }: NotesListProps) { 
 
-    const name = useSelector((state : RootState) => state?.auth?.userData?.name)
 
   if (notes.length === 0) {
     return (
@@ -28,7 +25,7 @@ function NotesList({ notes, onEdit, onDelete, isLoading }: NotesListProps) {
   return (
     <div className="space-y-5">
       {notes.map((note) => (
-        <NoteItem  key={note._id} note={note} userName={name || 'Unknown'} onEdit={onEdit} onDelete={onDelete} isLoading={isLoading} />
+        <NoteItem  key={note._id} note={note} onEdit={onEdit} onDelete={onDelete} isLoading={isLoading} />
       ))}
     </div>
   );
