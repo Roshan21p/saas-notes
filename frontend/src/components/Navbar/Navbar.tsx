@@ -20,7 +20,7 @@ export function Navbar() {
   const handleLogout = () => {
     dispatch(logout()); // clears state + localStorage
     dispatch(clearNotes());
-    navigate('/');
+    navigate("/");
   };
 
   return (
@@ -34,17 +34,28 @@ export function Navbar() {
           SaaS Notes
         </Link>
 
-        {/* Login / Logout */}
         {isAuthenticated ? (
-          <Button
-            variant="outline"
-            onClick={handleLogout}
-            className="cursor-pointer"
-          >
-            Logout
-          </Button>
+          <div className="flex items-center gap-3">
+            {/* Notes link */}
+            <Button
+              variant="outline"
+              className="text-indigo-600 hover:text-indigo-700 hover:bg-indigo-50"
+            >
+              <Link to="/notes">Notes</Link>
+            </Button>
+
+            {/* Logout */}
+            <Button
+              variant="outline"
+              className="cursor-pointer"
+              onClick={handleLogout}
+            >
+              Logout
+            </Button>
+          </div>
         ) : (
           <Button asChild>
+            {/* Login  */}
             <Link to="/auth/login">Login</Link>
           </Button>
         )}

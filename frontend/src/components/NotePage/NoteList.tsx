@@ -1,8 +1,8 @@
 import type { Note } from "@/types/note";
-import { NoteItem } from "./NoteItem";
 import { Plus } from "lucide-react";
 import { useSelector } from "react-redux";
 import type { RootState } from "@/Redux/store";
+import NoteItem from "./NoteItem";
 
 interface NotesListProps {
   notes: Note[];

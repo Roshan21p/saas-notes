@@ -1,6 +1,7 @@
 import Layout from "@/Layout/Layout";
 import { Mail, Lock, Loader2, ArrowRight } from "lucide-react";
 import type { ChangeEvent, FormEvent } from "react";
+import { Button } from "@/components/ui/button";
 
 type DemoCredentialType =
   | "acme-admin"
@@ -16,7 +17,7 @@ interface LoginPresentationProps {
   fillDemoCredentials: (type: DemoCredentialType) => void;
 }
 
-export default function LoginPresentation({
+function LoginPresentation({
   handleUserInput,
   handleFormSubmit,
   loginData,
@@ -29,7 +30,7 @@ export default function LoginPresentation({
     <Layout>
       <div className="flex-1 flex items-center justify-center px-4 py-8">
         <div className="w-full max-w-5xl grid md:grid-cols-2 gap-8 items-center">
-          {/* LEFT SIDE */}
+          {/* LEFT */}
           <div className="hidden md:block space-y-6">
             <h1 className="text-5xl font-extrabold text-slate-900">
               Welcome
@@ -43,7 +44,7 @@ export default function LoginPresentation({
             </p>
           </div>
 
-          {/* RIGHT SIDE – FORM */}
+          {/* RIGHT – FORM */}
           <div className="bg-white rounded-2xl shadow-xl p-8 border border-slate-200">
             <div className="mb-6">
               <h2 className="text-2xl font-bold text-slate-900">Sign In</h2>
@@ -52,7 +53,6 @@ export default function LoginPresentation({
               </p>
             </div>
 
-            {/* ✅ FORM */}
             <form className="space-y-5" onSubmit={handleFormSubmit}>
               {/* Email */}
               <div>
@@ -98,11 +98,11 @@ export default function LoginPresentation({
                 </div>
               </div>
 
-              {/* Submit */}
-              <button
+              {/* ✅ Submit Button */}
+              <Button
                 type="submit"
                 disabled={isLoading}
-                className="w-full py-3 bg-linear-to-r from-blue-600 to-indigo-600 text-white font-semibold rounded-lg flex items-center justify-center gap-2 disabled:opacity-50 cursor-pointer"
+                className="w-full py-3 bg-linear-to-r from-blue-600 to-indigo-600 font-semibold rounded-lg flex items-center justify-center gap-2 hover:shadow-lg transition cursor-pointer"
               >
                 {isLoading ? (
                   <>
@@ -115,13 +115,13 @@ export default function LoginPresentation({
                     <ArrowRight size={18} />
                   </>
                 )}
-              </button>
+              </Button>
             </form>
 
             {/* Divider */}
             <div className="relative my-6">
               <div className="absolute inset-0 flex items-center">
-                <div className="w-full border-t"></div>
+                <div className="w-full border-t" />
               </div>
               <div className="relative text-xs text-center">
                 <span className="px-2 bg-white text-slate-500">
@@ -130,32 +130,40 @@ export default function LoginPresentation({
               </div>
             </div>
 
-            {/* Demo Accounts */}
-            {/* Demo Credentials */}
+            {/*  Demo Buttons */}
             <div className="space-y-2">
               <div className="grid grid-cols-2 gap-2">
-                <button
+                <Button
                   type="button"
+                  variant="outline"
                   onClick={() => fillDemoCredentials("acme-admin")}
-                  className="text-left px-3 py-2 bg-linear-to-br from-blue-50 to-blue-100 rounded-lg border border-blue-200 hover:border-blue-400 hover:shadow-md transition text-xs cursor-pointer"
+                  className="text-left px-3 py-2 bg-linear-to-br from-blue-50 to-blue-100 border-blue-200 hover:border-blue-400 hover:shadow-md text-xs cursor-pointer"
                 >
                   <div className="font-semibold text-blue-900">Acme Admin</div>
-                  <div className="text-blue-700 truncate">admin@acme.test</div>
-                </button>
-                <button
+                  <div className="text-blue-700 truncate">
+                    admin@acme.test
+                  </div>
+                </Button>
+
+                <Button
                   type="button"
+                  variant="outline"
                   onClick={() => fillDemoCredentials("acme-member")}
-                  className="text-left px-3 py-2 bg-linear-to-br from-indigo-50 to-indigo-100 rounded-lg border border-indigo-200 hover:border-indigo-400 hover:shadow-md transition text-xs cursor-pointer"
+                  className="text-left px-3 py-2 bg-linear-to-br from-indigo-50 to-indigo-100 border-indigo-200 hover:border-indigo-400 hover:shadow-md text-xs cursor-pointer"
                 >
                   <div className="font-semibold text-indigo-900">
                     Acme Member
                   </div>
-                  <div className="text-indigo-700 truncate">user@acme.test</div>
-                </button>
-                <button
+                  <div className="text-indigo-700 truncate">
+                    user@acme.test
+                  </div>
+                </Button>
+
+                <Button
                   type="button"
+                  variant="outline"
                   onClick={() => fillDemoCredentials("globex-admin")}
-                  className="text-left px-3 py-2 bg-linear-to-br from-purple-50 to-purple-100 rounded-lg border border-purple-200 hover:border-purple-400 hover:shadow-md transition text-xs cursor-pointer"
+                  className="text-left px-3 py-2 bg-linear-to-br from-purple-50 to-purple-100 border-purple-200 hover:border-purple-400 hover:shadow-md text-xs cursor-pointer"
                 >
                   <div className="font-semibold text-purple-900">
                     Globex Admin
@@ -163,18 +171,23 @@ export default function LoginPresentation({
                   <div className="text-purple-700 truncate">
                     admin@globex.test
                   </div>
-                </button>
-                <button
+                </Button>
+
+                <Button
                   type="button"
+                  variant="outline"
                   onClick={() => fillDemoCredentials("globex-member")}
-                  className="text-left px-3 py-2 bg-linear-to-br from-pink-50 to-pink-100 rounded-lg border border-pink-200 hover:border-pink-400 hover:shadow-md transition text-xs cursor-pointer"
+                  className="text-left px-3 py-2 bg-linear-to-br from-pink-50 to-pink-100 border-pink-200 hover:border-pink-400 hover:shadow-md text-xs cursor-pointer"
                 >
                   <div className="font-semibold text-pink-900">
                     Globex Member
                   </div>
-                  <div className="text-pink-700 truncate">user@globex.test</div>
-                </button>
+                  <div className="text-pink-700 truncate">
+                    user@globex.test
+                  </div>
+                </Button>
               </div>
+
               <p className="text-xs text-center text-slate-500 mt-2">
                 All demo accounts use password:{" "}
                 <span className="font-semibold">password</span>
@@ -186,3 +199,5 @@ export default function LoginPresentation({
     </Layout>
   );
 }
+
+export default LoginPresentation;
