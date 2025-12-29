@@ -1,6 +1,8 @@
 import apiClient from "@/config/axiosConfig";
 import type { Note } from "@/types/note";
-import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
+import { createAsyncThunk, createSlice,
+ } from "@reduxjs/toolkit";
+import type {  AxiosError } from "axios";
 import toast from "react-hot-toast";
 
 interface CreateNotePayload {
@@ -63,14 +65,15 @@ export const createNote = createAsyncThunk<
       success: (resolvedPromise) => {
         return resolvedPromise?.data?.message;
       },
-      error: (error) => {
+      error: (error: AxiosError<any>) => {
         return error?.response?.data?.message || error?.message;
       },
     });
 
     const apiResponse = await response;
     return apiResponse.data;
-  } catch (error: any) {
+  } catch (err) {
+    const error = err as AxiosError<any>;
     console.log("Create note error", error);
     return rejectWithValue(error?.response?.data?.message || error?.message);
   }
@@ -88,13 +91,14 @@ export const fetchMyNotes = createAsyncThunk<
       success: (resolvedPromise) => {
         return resolvedPromise?.data?.message;
       },
-      error: (error) => {
+      error: (error: AxiosError<any>) => {
         return error?.response?.data?.messsage || error?.message;
       },
     });
     const apiResponse = await response;
     return apiResponse.data;
-  } catch (error: any) {
+  } catch (err) {
+    const error = err as AxiosError<any>;
     console.log("Failed to fetch the notes.", error);
     return rejectWithValue(error?.response?.data?.message || error?.message);
   }
@@ -112,13 +116,14 @@ export const updateMyNotes = createAsyncThunk<
       success: (resolvedPromise) => {
         return resolvedPromise?.data?.message;
       },
-      error: (error) => {
+      error: (error: AxiosError<any>) => {
         return error?.response?.data?.messsage || error?.message;
       },
     });
     const apiResponse = await response;
     return apiResponse.data;
-  } catch (error: any) {
+  } catch (err) {
+    const error = err as AxiosError<any>;
     console.log("Failed to updates the notes.", error);
     return rejectWithValue(error?.response?.data?.message || error?.message);
   }
@@ -137,19 +142,20 @@ export const deleteNote = createAsyncThunk<
       success: (resolvedPromise) => {
         return resolvedPromise?.data?.message;
       },
-      error: (error) => {
+      error: (error: AxiosError<any>) => {
         return error?.response?.data?.messsage || error?.message;
       },
     });
     const apiResponse = await response;
     return apiResponse.data;
-  } catch (error: any) {
+  } catch (err) {
+    const error = err as AxiosError<any>;
     console.log("Failed to delete the note", error);
     return rejectWithValue(error?.response?.data?.message || error?.message);
   }
 });
 
-/*   Admin    */
+/*   -------------------- Admin --------------------   */
 export const fetchAllNotesAdmin = createAsyncThunk<
   FetchNoteResponse,
   void,
@@ -162,13 +168,14 @@ export const fetchAllNotesAdmin = createAsyncThunk<
       success: (resolvedPromise) => {
         return resolvedPromise?.data?.message;
       },
-      error: (error) => {
+      error: (error: AxiosError<any>) => {
         return error?.response?.data?.messsage || error?.message;
       },
     });
     const apiResponse = await response;
     return apiResponse.data;
-  } catch (error: any) {
+  } catch (err) {
+    const error = err as AxiosError<any>;
     console.log("Failed to fetch the notes.", error);
     return rejectWithValue(error?.response?.data?.message || error?.message);
   }

@@ -2,6 +2,7 @@ import type { RootState } from "@/Redux/store";
 import { Plus } from "lucide-react";
 import { useSelector } from "react-redux";
 import { Button } from "@/components/ui/button";
+import { Link } from "react-router-dom";
 
 interface ActionButtonsProps {
   onNewNote: () => void;
@@ -48,7 +49,7 @@ function ActionButtons({
             disabled={isLoading}
             className="px-5 py-3 rounded-xl text-sm font-medium text-blue-700 border-blue-200 shadow-md hover:bg-blue-50 hover:shadow-lg hover:scale-105 transition-all cursor-pointer"
           >
-            Invite User
+            <Link to="/tenants/invite">Invite User</Link>
           </Button>
 
           {/* All Notes */}
