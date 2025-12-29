@@ -78,6 +78,41 @@ export const login = createAsyncThunk<
   }
 );
 
+export const acceptInvite = createAsyncThunk<
+  { success: boolean; message: string },
+  { token: string; password: string },
+  { rejectValue: string }
+>(
+  "auth/acceptInvite",
+  async ({ token, password }, { rejectWithValue }) => {
+    try {
+      const response = apiClient.post("/auth/accept-invite", {
+        token,
+        password,
+      });
+
+      toast.promise(response, {
+        loading: "Setting up your account…",
+        success: (resolvedPromise) =>
+          resolvedPromise?.data?.message || "Your account has been activated successfully!",
+        error: (error: AxiosError<any>) =>
+          error?.response?.data?.message ||
+          "Something went wrong while accepting the invitation.",
+      });
+
+      const apiResponse = await response;
+      return apiResponse.data;
+    } catch (err) {
+      const error = err as AxiosError<any>;
+      return rejectWithValue(
+        error.response?.data?.message ||
+          "Unable to accept the invitation. Please try again."
+      );
+    }
+  }
+);
+
+
 const AuthSlice = createSlice({
   name: "auth",
   initialState,

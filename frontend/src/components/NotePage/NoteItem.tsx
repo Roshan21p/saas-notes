@@ -16,7 +16,7 @@ function NoteItem({ note, onEdit, onDelete, isLoading }: NoteItemProps) {
 
   return (
     <div
-      key={note._id}
+      key={note?._id}
       className="bg-white p-6 rounded-2xl border-2 border-indigo-100 shadow-lg hover:shadow-2xl hover:-translate-y-1 hover:border-indigo-300 transition-all duration-300 relative overflow-hidden group"
     >
       {/* left accent */}
@@ -25,18 +25,18 @@ function NoteItem({ note, onEdit, onDelete, isLoading }: NoteItemProps) {
       <div className="flex justify-between items-start">
         <div className="flex-1">
           <h3 className="text-xl font-bold text-gray-900 mb-2 group-hover:text-indigo-700 transition-colors">
-            {note.title}
+            {note?.title}
           </h3>
 
-          <p className="text-gray-600 leading-relaxed mb-3">{note.content}</p>
+          <p className="text-gray-600 leading-relaxed mb-3">{note?.content}</p>
 
           <div className="flex items-center gap-2 text-sm text-gray-500">
             <span className="px-3 py-1 bg-indigo-50 text-indigo-700 rounded-full font-medium">
-              {note.userId.name || name}
+              {note?.userId?.name || name}
             </span>
             <span>•</span>
             <span>
-              {new Date(note.createdAt ?? note.updatedAt).toLocaleDateString()}
+              {new Date(note?.createdAt ?? note?.updatedAt).toLocaleDateString()}
             </span>
           </div>
         </div>
@@ -58,7 +58,7 @@ function NoteItem({ note, onEdit, onDelete, isLoading }: NoteItemProps) {
           <Button
             size="icon"
             variant="ghost"
-            onClick={() => onDelete(note._id)}
+            onClick={() => onDelete(note?._id)}
             disabled={isLoading}
             className="text-red-600 hover:bg-red-100 rounded-xl hover:scale-110 shadow-sm transition-all cursor-pointer"
           >
