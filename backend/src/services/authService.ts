@@ -83,11 +83,8 @@ export const acceptInviteService = async ({ token, password }: AcceptInviteInput
     throw new AppError(400, "Invite already accepted.");
   }
 
-   // Hash the new password
-  const saltRounds = 10;
-  const hashedPassword = await bcrypt.hash(password, saltRounds);
 
-  user.password = hashedPassword;
+  user.password = password;
   user.isInvited = false; // mark as accepted
   await user.save();
 

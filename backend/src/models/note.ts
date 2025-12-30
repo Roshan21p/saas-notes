@@ -21,7 +21,7 @@ const noteSchema = new Schema<INote>(
       type: String,
       trim: true,
       required: true,
-      minlength: [5, 'Content field required atleast 5 characters long']
+      minlength: [4, 'Content field required atleast 4 characters long']
     },
     tenantId: {
       type: Schema.Types.ObjectId,

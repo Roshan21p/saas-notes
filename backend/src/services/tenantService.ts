@@ -2,7 +2,7 @@ import { FRONTEND_URL, JWT_SECRET } from "../config/serverConfig";
 import { Tenant } from "../models/tenant";
 import { User } from "../models/user";
 import { AppError } from "../utils/AppError";
-import { sendEmail } from "../utils/mailObject";
+import { inviteUserEmail, sendEmail } from "../utils/mailObject";
 import { userData } from "./noteService";
 import jwt from "jsonwebtoken";
 
@@ -126,13 +126,13 @@ export const inviteUserService = async (
       : "";
 
     // Compose email content
-    const emailHtml = `
-    <p>Hello ${name},</p>
-    <p>You have been invited to join the SaaS Notes app under <strong>${companyName}</strong>  Corporation company tenant.</p>
-    <p>Please click the link below to accept the invitation and set your password:</p>
-    <a href="${inviteUrl}">Accept Invitation</a>
-    <p>This link expires in 2 days.</p>
-  `;
+    const emailHtml = inviteUserEmail({
+      name,
+      email,
+      role,
+      companyName,
+      inviteUrl,
+    });
 
     // Send the invite email
     await sendEmail(email, "You're invited to join SaaS Notes app", emailHtml);
@@ -140,3 +140,25 @@ export const inviteUserService = async (
     throw error;
   }
 };
+
+export const getMyTenantService = async (user: userData) => {
+  try {
+    const { tenantId } = user;
+
+    if (!tenantId) {
+      throw new AppError(400, "Tenant information missing.");
+    }
+
+    const tenant = await Tenant.findById(tenantId)
+      .select("name slug plan noteLimit");
+
+    if (!tenant) {
+      throw new AppError(404, "Tenant not found.");
+    }
+
+    return tenant;
+  } catch (error) {
+    throw error;
+  }
+};
+

@@ -1,6 +1,7 @@
 import { Request, Response, NextFunction } from "express";
 import { AppError } from "../utils/AppError";
 import {
+  getMyTenantService,
   inviteUserService,
   upgradeTenantPlanService,
 } from "../services/tenantService";
@@ -46,6 +47,29 @@ export const inviteUserController = async (
     });
   } catch (error) {
     console.log("Invite User Controller error: ", error);
+    next(error);
+  }
+};
+
+export const getMyTenantController = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
+  try {
+    if (!req.user) {
+      return next(new AppError(401, "Authentication required. Please log in."));
+    }
+
+    const response = await getMyTenantService(req.user);
+
+    res.status(200).json({
+      success: true,
+      message: "Tenant fetched successfully",
+      data: response,
+    });
+  } catch (error) {
+    console.log("Get My Tenant Controller error: ", error);
     next(error);
   }
 };

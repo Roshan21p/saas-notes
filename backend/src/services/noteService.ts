@@ -1,4 +1,3 @@
-import { log } from "console";
 import { Note } from "../models/note";
 import { Tenant } from "../models/tenant";
 import { AppError } from "../utils/AppError";
@@ -16,7 +15,6 @@ export interface userData {
 }
 
 export const createNoteService = async (data: noteInput, user: userData) => {
-
   try {
     const { title, content } = data || {}; // Prevent destructure error
     const { userId, tenantId } = user;
@@ -39,6 +37,8 @@ export const createNoteService = async (data: noteInput, user: userData) => {
 
     // Count existing notes for this tenant (company)
     const noteCount = await Note.countDocuments({ tenantId });
+
+    console.log("noteCount",noteCount)
 
     // Enforce plan-based note limit
     if (tenant.plan === "free" && noteCount >= tenant.noteLimit) {
@@ -76,7 +76,7 @@ export const listNotesService = async (user: userData) => {
 
     const notes = await Note.find({ tenantId })
       .sort({ createdAt: -1 })
-      .populate("userId", "-password");
+      .populate("userId", "_id name");
 
     return notes;
   } catch (error) {
@@ -88,7 +88,9 @@ export const listMyNotesService = async (user: userData) => {
   try {
     const { userId, tenantId } = user || {}; // Prevent destructure error
 
-    const notes = await Note.find({ tenantId, userId }).sort({ createdAt: -1 });
+    const notes = await Note.find({ tenantId, userId })
+      .sort({ createdAt: -1 })
+      .populate("userId", "_id name");
 
     return notes;
   } catch (error) {
@@ -170,7 +172,7 @@ export const updateNoteByIdService = async (
     await note.save();
 
     return {
-      id: note._id,
+      _id: note._id,
       ...(title !== undefined && { title: note.title }),
       ...(content !== undefined && { content: note.content }),
       updatedAt: note.updatedAt,
