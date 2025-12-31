@@ -20,7 +20,7 @@ export const upgradeTenantPlanController = async (
 
     return res.status(200).json({
       success: true,
-      message: `Tenant ${tenant.name} upgraded to Pro plan successfully`,
+      message: `Tenant ${tenant.name} upgraded to Pro plan successfully.`,
       data: tenant,
     });
   } catch (error) {
