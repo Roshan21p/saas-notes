@@ -5,6 +5,7 @@ import NotesPage from "./pages/Note/NotePage";
 import InviteUser from "./pages/Tenant/InviteUser";
 import AcceptInvite from "./pages/AcceptInvite/AcceptInvite";
 import UpgradePlan from "./pages/Tenant/UpgradePlan";
+import RequireAuth from "./components/Auth/RequireAuth";
 
 function App() {
   return (
@@ -13,15 +14,17 @@ function App() {
 
       <Route path="/auth/login" element={<Login />} />
 
-      <Route path="/notes" element={<NotesPage />} />
-
-      <Route path="/tenant/invite" element={<InviteUser />} />
-
       <Route path="/invite" element={<AcceptInvite />} />
 
-      <Route path="/tenant/upgrade" element={<UpgradePlan />} />
+      <Route element={<RequireAuth allowedRoles={["Admin", "Member"]} />}>
+        <Route path="/notes" element={<NotesPage />} />
+      </Route>
 
+      <Route element={<RequireAuth allowedRoles={["Admin"]} />}>
+        <Route path="/tenant/invite" element={<InviteUser />} />
 
+        <Route path="/tenant/upgrade" element={<UpgradePlan />} />
+      </Route>
     </Routes>
   );
 }
