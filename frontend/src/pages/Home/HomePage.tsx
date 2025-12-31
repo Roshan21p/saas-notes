@@ -2,8 +2,13 @@ import { Users, Shield, Zap } from "lucide-react";
 import { Pricing } from "@/components/Pricing/Pricing";
 import FeatureCard from "@/components/Feature/FeatureCard";
 import Layout from "@/Layout/Layout";
+import {  useSelector } from "react-redux";
+import type {  RootState } from "@/Redux/store";
+
 
 function HomePage() {
+    const data = useSelector((state: RootState) => state?.tenant?.data)
+
   return (
     <Layout>
       <main className="grow max-w-7xl mx-auto px-4 py-20">
@@ -42,7 +47,8 @@ function HomePage() {
           />
         </div>
 
-        <Pricing />
+         {/* Pricing only for free plan users */}
+        {data?.plan === "free" && <Pricing />}
       </main>
     </Layout>
   );

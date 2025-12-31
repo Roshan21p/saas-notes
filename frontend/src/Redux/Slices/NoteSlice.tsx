@@ -92,14 +92,14 @@ export const fetchMyNotes = createAsyncThunk<
         return resolvedPromise?.data?.message;
       },
       error: (error: AxiosError<any>) => {
-        return error?.response?.data?.messsage || error?.message;
+        return error?.response?.data?.message || error?.message;
       },
     });
     const apiResponse = await response;
     return apiResponse.data;
   } catch (err) {
     const error = err as AxiosError<any>;
-    console.log("Failed to fetch the notes.", error);
+    console.log("Failed to fetch the notes.", error );
     return rejectWithValue(error?.response?.data?.message || error?.message);
   }
 });
@@ -169,14 +169,14 @@ export const fetchAllNotesAdmin = createAsyncThunk<
         return resolvedPromise?.data?.message;
       },
       error: (error: AxiosError<any>) => {
-        return error?.response?.data?.messsage || error?.message;
+        return error?.response?.data?.message || error?.message;
       },
     });
     const apiResponse = await response;
     return apiResponse.data;
   } catch (err) {
     const error = err as AxiosError<any>;
-    console.log("Failed to fetch the notes.", error);
+    console.log("Failed to fetch all the notes.", error);
     return rejectWithValue(error?.response?.data?.message || error?.message);
   }
 });

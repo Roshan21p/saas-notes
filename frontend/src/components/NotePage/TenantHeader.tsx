@@ -1,5 +1,5 @@
 type TenantHeaderProps = {
-  tenantName: string;
+  tenantName: string | undefined;
 };
 
 function TenantHeader({ tenantName }: TenantHeaderProps) {

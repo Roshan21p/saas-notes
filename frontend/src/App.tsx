@@ -4,6 +4,7 @@ import Login from "./pages/Auth/Login";
 import NotesPage from "./pages/Note/NotePage";
 import InviteUser from "./pages/Tenant/InviteUser";
 import AcceptInvite from "./pages/AcceptInvite/AcceptInvite";
+import UpgradePlan from "./pages/Tenant/UpgradePlan";
 
 function App() {
   return (
@@ -14,9 +15,12 @@ function App() {
 
       <Route path="/notes" element={<NotesPage />} />
 
-      <Route path="/tenants/invite" element={<InviteUser />} />
+      <Route path="/tenant/invite" element={<InviteUser />} />
 
       <Route path="/invite" element={<AcceptInvite />} />
+
+      <Route path="/tenant/upgrade" element={<UpgradePlan />} />
+
 
     </Routes>
   );

@@ -49,7 +49,7 @@ function ActionButtons({
             disabled={isLoading}
             className="px-5 py-3 rounded-xl text-sm font-medium text-blue-700 border-blue-200 shadow-md hover:bg-blue-50 hover:shadow-lg hover:scale-105 transition-all cursor-pointer"
           >
-            <Link to="/tenants/invite">Invite User</Link>
+            <Link to="/tenant/invite">Invite User</Link>
           </Button>
 
           {/* All Notes */}

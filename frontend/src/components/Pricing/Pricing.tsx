@@ -2,6 +2,7 @@
 import { Card, CardContent, CardHeader } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { CheckCircle } from "lucide-react";
+import { Link } from "react-router-dom";
 
 export function Pricing() {
   return (
@@ -58,7 +59,7 @@ export function Pricing() {
               </li>
             </ul>
             <Button className="w-full bg-white text-blue-600 hover:bg-blue-50">
-              Upgrade to Pro
+              <Link to='/tenant/upgrade'>Upgrade to Pro</Link>
             </Button>
           </CardContent>
         </Card>

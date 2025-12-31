@@ -5,6 +5,7 @@ import { useSelector, useDispatch } from "react-redux";
 import type { RootState, AppDispatch } from "@/Redux/store";
 import { logout } from "@/Redux/Slices/AuthSlice"; // if you have / will add
 import { clearNotes } from "@/Redux/Slices/NoteSlice";
+import { clearTenant } from "@/Redux/Slices/TenantSlice";
 
 export function Navbar() {
   // AppDispatch -> Typed dispatch function that understand async thunks
@@ -20,8 +21,10 @@ export function Navbar() {
   const handleLogout = () => {
     dispatch(logout()); // clears state + localStorage
     dispatch(clearNotes());
+    dispatch(clearTenant());
     navigate("/");
   };
+
 
   return (
     <nav className="sticky top-0 z-50 bg-white border-b border-slate-200">

@@ -21,6 +21,9 @@ function NotePage() {
   const dispatch = useDispatch<AppDispatch>();
   const { notes, isLoading } = useSelector((state: RootState) => state.notes);
 
+    const name = useSelector((state: RootState) => state?.tenant?.data?.name);
+
+
   const [formData, setFormData] = useState<NoteFormData>({
     title: "",
     content: "",
@@ -32,9 +35,7 @@ function NotePage() {
   const [showForm, setShowForm] = useState(false);
 
   useEffect(() => {
-    console.log("note", notes.length);
     if (notes.length === 0) {
-      console.log("note");
       dispatch(fetchMyNotes());
     }
   }, [dispatch]);
@@ -123,7 +124,7 @@ function NotePage() {
       <div className="min-h-screen bg-linear-to-br from-indigo-50 via-blue-50 to-white">
         <div className="max-w-6xl mx-auto px-6 py-8">
           <div className="mb-10 flex flex-col items-center gap-6">
-            <TenantHeader tenantName={"Acme Corporation"} />
+            <TenantHeader tenantName={name} />
             <ActionButtons
               onNewNote={() => {
                 setEditingNoteId(null);

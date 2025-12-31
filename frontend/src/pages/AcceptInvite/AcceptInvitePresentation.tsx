@@ -23,8 +23,8 @@ function AcceptInvitePresentation({
   return (
     <Layout>
       {/*  Full height so footer stays bottom */}
-      <div className="flex-1 flex items-center justify-center px-4 bg-linear-to-br from-indigo-50 via-blue-50 to-white">
-        <div className="w-full max-w-md bg-white rounded-2xl shadow-xl p-8 border border-slate-200">
+       <div className="flex items-center justify-center px-4 py-12">
+    <div className="w-full max-w-md bg-white rounded-2xl shadow-xl p-8 border">
           
           {/* Header */}
           <div className="mb-6 text-center">
