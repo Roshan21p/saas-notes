@@ -12,7 +12,7 @@ type DemoCredentialType =
 interface LoginPresentationProps {
   handleUserInput: (e: ChangeEvent<HTMLInputElement>) => void;
   handleFormSubmit: (e: FormEvent<HTMLFormElement>) => void;
-  loginData: { email: string; password: string };
+  loginData: { email: string; password: string; slug: string };
   isLoading: boolean;
   fillDemoCredentials: (type: DemoCredentialType) => void;
 }
@@ -24,7 +24,7 @@ function LoginPresentation({
   isLoading,
   fillDemoCredentials,
 }: LoginPresentationProps) {
-  const { email, password } = loginData;
+  const { email, password, slug } = loginData;
 
   return (
     <Layout>
@@ -98,7 +98,24 @@ function LoginPresentation({
                 </div>
               </div>
 
-              {/* ✅ Submit Button */}
+              <div>
+                <label className="block text-sm font-medium text-slate-700 mb-2">
+                  Company name
+                </label>
+                <div className="relative">
+                  <input
+                    name="slug"
+                    type="text"
+                    value={slug}
+                    onChange={handleUserInput}
+                    disabled={isLoading}
+                    className="w-full px-3 py-2.5 border rounded-lg focus:ring-2 focus:ring-blue-500 text-sm"
+                    placeholder="acme / globex"
+                  />
+                </div>
+              </div>
+
+              {/* Submit Button */}
               <Button
                 type="submit"
                 disabled={isLoading}

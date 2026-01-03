@@ -9,6 +9,7 @@ import type {  RootState } from "@/Redux/store";
 function HomePage() {
     const data = useSelector((state: RootState) => state?.tenant?.data)
 
+
   return (
     <Layout>
       <main className="grow max-w-7xl mx-auto px-4 py-20">
@@ -48,7 +49,7 @@ function HomePage() {
         </div>
 
          {/* Pricing only for free plan users */}
-        {data?.plan === "free" && <Pricing />}
+        {(!data || data?.plan === "free") && <Pricing />}
       </main>
     </Layout>
   );

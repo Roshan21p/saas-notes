@@ -9,13 +9,13 @@ import { useNavigate } from "react-router-dom";
 interface LoginData {
   email: string;
   password: string;
+  slug: string;
 }
 
 function Login() {
-  
-    // Typed dispatch so TS knows the shape of dispatch and payloads
-    const dispatch = useDispatch<AppDispatch>();
-    const navigate = useNavigate();
+  // Typed dispatch so TS knows the shape of dispatch and payloads
+  const dispatch = useDispatch<AppDispatch>();
+  const navigate = useNavigate();
 
   // Typed useState generics
   const [isLoading, setIsLoading] = useState<boolean>(false);
@@ -23,10 +23,11 @@ function Login() {
   const [loginData, setLoginData] = useState<LoginData>({
     email: "",
     password: "",
+    slug: "",
   });
 
   // Handler for input changes, typed for input element change event
-   function handleUserInput(e: ChangeEvent<HTMLInputElement>) {
+  function handleUserInput(e: ChangeEvent<HTMLInputElement>) {
     const { name, value } = e.target;
 
     setLoginData({
@@ -39,7 +40,7 @@ function Login() {
   async function handleFormSubmit(e: FormEvent<HTMLFormElement>) {
     e.preventDefault(); // prevent default form submit behavior (page reload)
 
-    if (!loginData.email || !loginData.password) {
+    if (!loginData.email || !loginData.password || !loginData.slug) {
       toast.error("Missing values from the form.");
       return;
     }
@@ -50,18 +51,18 @@ function Login() {
 
     setIsLoading(true);
 
-
-    try {      
-      // unwrap returns only fulfilled payload and remove payload 
+    try {
+      // unwrap returns only fulfilled payload and remove payload
       const apiResponse = await dispatch(login(loginData)).unwrap();
 
-      if(apiResponse?.data?.success){
-        navigate('/');
+      if (apiResponse?.data?.success) {
+        navigate("/");
         setLoginData({
-        email: '',
-        password: ''
-      });
-      return;
+          email: "",
+          password: "",
+          slug: "",
+        });
+        return;
       }
     } catch (error) {
       console.log("Login failed", error);
@@ -75,16 +76,29 @@ function Login() {
     type: "acme-admin" | "acme-member" | "globex-admin" | "globex-member"
   ) => {
     const credentials = {
-      "acme-admin": { email: "admin@acme.test", password: "password" },
-      "acme-member": { email: "user@acme.test", password: "password" },
-      "globex-admin": { email: "admin@globex.test", password: "password" },
-      "globex-member": { email: "user@globex.test", password: "password" },
+      "acme-admin": {
+        email: "admin@acme.test",
+        password: "password",
+        slug: "acme",
+      },
+      "acme-member": {
+        email: "user@acme.test",
+        password: "password",
+        slug: "acme",
+      },
+      "globex-admin": {
+        email: "admin@globex.test",
+        password: "password",
+        slug: "globex",
+      },
+      "globex-member": {
+        email: "user@globex.test",
+        password: "password",
+        slug: "globex",
+      },
     };
 
-    setLoginData({
-      email: credentials[type].email,
-      password: credentials[type].password,
-    });
+    setLoginData(credentials[type]);
   };
 
   return (

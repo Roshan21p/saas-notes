@@ -12,6 +12,7 @@ import type { AxiosError, AxiosResponse } from "axios";
 interface LoginCredentials {
   email: string;
   password: string;
+  slug: string;
 }
 
 // User object coming from backend
@@ -49,81 +50,72 @@ const initialState: AuthState = {
 
 export const login = createAsyncThunk<
   AxiosResponse<LoginResponse>, // return type
-  LoginCredentials,             // argument type
-  { rejectValue: string }      // reject type
->(
-  "auth/login",
-  async (credentials, { rejectWithValue }) => {
-    try {
-      const response = apiClient.post<LoginResponse>(
-        "/auth/login",
-        credentials
-      );
-      toast.promise(response, {
-        loading: "Hold back tight, we are registering your id...",
-        success: (resolvedPromise) => {
-          return resolvedPromise?.data?.message;
-        },
-        error: (error: AxiosError<any>) => {
-          return error?.response?.data?.message || error?.message;
-        },
-      });
-      const apiResponse = await response;
-      return apiResponse;
-    } catch (err) {
-      const error = err as AxiosError<any>;
-      console.log("login error", err);
-      return rejectWithValue(error?.response?.data?.message || error?.message);
-    }
+  LoginCredentials, // argument type
+  { rejectValue: string } // reject type
+>("auth/login", async (credentials, { rejectWithValue }) => {
+  try {
+    const response = apiClient.post<LoginResponse>("/auth/login", credentials);
+    toast.promise(response, {
+      loading: "Hold back tight, we are registering your id...",
+      success: (resolvedPromise) => {
+        return resolvedPromise?.data?.message;
+      },
+      error: (error: AxiosError<any>) => {
+        return error?.response?.data?.message || error?.message;
+      },
+    });
+    const apiResponse = await response;
+    return apiResponse;
+  } catch (err) {
+    const error = err as AxiosError<any>;
+    console.log("login error", err);
+    return rejectWithValue(error?.response?.data?.message || error?.message);
   }
-);
+});
 
 export const acceptInvite = createAsyncThunk<
   { success: boolean; message: string },
   { token: string; password: string },
   { rejectValue: string }
->(
-  "auth/acceptInvite",
-  async ({ token, password }, { rejectWithValue }) => {
-    try {
-      const response = apiClient.post("/auth/accept-invite", {
-        token,
-        password,
-      });
+>("auth/acceptInvite", async ({ token, password }, { rejectWithValue }) => {
+  try {
+    const response = apiClient.post("/auth/accept-invite", {
+      token,
+      password,
+    });
 
-      toast.promise(response, {
-        loading: "Setting up your account…",
-        success: (resolvedPromise) =>
-          resolvedPromise?.data?.message || "Your account has been activated successfully!",
-        error: (error: AxiosError<any>) =>
-          error?.response?.data?.message ||
-          "Something went wrong while accepting the invitation.",
-      });
+    toast.promise(response, {
+      loading: "Setting up your account…",
+      success: (resolvedPromise) =>
+        resolvedPromise?.data?.message ||
+        "Your account has been activated successfully!",
+      error: (error: AxiosError<any>) =>
+        error?.response?.data?.message ||
+        "Something went wrong while accepting the invitation.",
+    });
 
-      const apiResponse = await response;
-      return apiResponse.data;
-    } catch (err) {
-      const error = err as AxiosError<any>;
-      return rejectWithValue(
-        error.response?.data?.message ||
-          "Unable to accept the invitation. Please try again."
-      );
-    }
+    const apiResponse = await response;
+    return apiResponse.data;
+  } catch (err) {
+    const error = err as AxiosError<any>;
+    return rejectWithValue(
+      error.response?.data?.message ||
+        "Unable to accept the invitation. Please try again."
+    );
   }
-);
-
+});
 
 const AuthSlice = createSlice({
   name: "auth",
   initialState,
   reducers: {
-      logout: (state) => {
-    state.isAuthenticated = false;
-    state.role = "";
-    state.userData = null;
+    logout: (state) => {
+      state.isAuthenticated = false;
+      state.role = "";
+      state.userData = null;
 
-    localStorage.clear();
-      }
+      localStorage.clear();
+    },
   },
   extraReducers: (builder) => {
     builder.addCase(
@@ -135,7 +127,6 @@ const AuthSlice = createSlice({
         state.isAuthenticated = action?.payload?.data?.success;
         state.role = action?.payload?.data?.user?.role;
         state.userData = action?.payload?.data?.user;
-
 
         localStorage.setItem(
           "isAuthenticated",

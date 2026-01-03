@@ -14,7 +14,7 @@ function App() {
 
       <Route path="/auth/login" element={<Login />} />
 
-      <Route path="/invite" element={<AcceptInvite />} />
+      <Route path="/accept-invite" element={<AcceptInvite />} />
 
       <Route element={<RequireAuth allowedRoles={["Admin", "Member"]} />}>
         <Route path="/notes" element={<NotesPage />} />
