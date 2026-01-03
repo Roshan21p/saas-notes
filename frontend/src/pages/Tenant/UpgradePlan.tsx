@@ -54,7 +54,7 @@ function UpgradePlan() {
           <Button
             disabled={isLoading}
             onClick={handleUpgrade}
-            className="w-full bg-linear-to-r from-indigo-600 to-blue-600"
+            className="w-full bg-linear-to-r from-indigo-600 to-blue-600 cursor-pointer"
           >
             {isLoading ? (
               <>

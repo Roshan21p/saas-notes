@@ -1,11 +1,42 @@
-# 📝 SaaS Notes Backend (Multi-Tenant)
+# 📝 SaaS Notes – Multi-Tenant Full-Stack Application
 
-This repository contains the **backend service** for a **Multi-Tenant SaaS Notes Application** built using **Node.js, Express, TypeScript, and MongoDB**. It follows a clean, scalable architecture suitable for real-world SaaS products.
+A full-stack multi-tenant SaaS notes application built with Node.js, Express, TypeScript, MongoDB, and React.
 
+The project demonstrates real-world SaaS concepts such as multi-tenancy, role-based access control, subscription plans, and feature gating, following a clean and scalable architecture.
+
+---
+
+## 🌐 Project Overview
+
+This repository contains:
+
+- **Frontend** → User interface for authentication, notes, and tenant management  
+- **Backend** → REST API, authentication, multi-tenancy, subscriptions  
+
+Both parts are designed to work together as a real SaaS product.
+
+---
+## 🌐 Live Demo & API
+
+Try the application live:
+
+- **Frontend (User Interface):** [https://saas-notes-beta.vercel.app](https://saas-notes-beta.vercel.app)  
+- **Backend API:** [https://saas-notes-nk3l.onrender.com](https://saas-notes-nk3l.onrender.com)
+
+> ⚠️ The backend is hosted on Render and may take a few seconds to start if idle.
 ---
 
 ## 🚀 Tech Stack
 
+### Frontend
+- **React**
+- **TypeScript**
+- **Tailwind CSS**
+- State management using **Redux ToolKit**
+- **Axios**
+- **JWT-based Auth Flow**
+
+### Backend
 * **Node.js**
 * **Express.js**
 * **TypeScript**
@@ -167,22 +198,6 @@ npm run seed
 
 ---
 
-## ⚙️ Environment Variables
-
-Create a `.env` file in the root directory:
-
-```
-PORT=8080
-MONGO_URI=mongodb://localhost:27017/saas-notes
-JWT_SECRET=your_jwt_secret
-JWT_EXPIRY=your_jwt_expiry
-MAIL_USER=your_email
-MAIL_PASS=your_password
-FRONTEND_URL=your_frontend_url
-```
-
----
-
 ## 🛡️ Security
 
 * CORS enabled
@@ -232,26 +247,33 @@ FRONTEND_URL=your_frontend_url
 
 ## ▶️ How to Run Locally
 
-### 1️⃣ Clone the repository
+### 1. Clone the repository
 
 ```bash
 git clone https://github.com/Roshan21p/saas-notes.git
-cd backend
+cd saas-notes
 ```
 
-### 2️⃣ Install dependencies
+## 2. Frontend Setup
+```bash
+cd frontend
+npm install
+npm run dev
+```
+
+### Frontend runs at:
+```
+http://localhost:5173
+```
+
+## 3. Backend Setup
 
 ```bash
+cd backend
 npm install
 ```
 
-### 3️⃣ Run seed script (development only)
-
-```bash
-npm run seed
-```
-
-### 4️⃣ Start development server
+###  Start development server
 
 ```bash
 npm run dev
@@ -263,13 +285,32 @@ Server will start at:
 http://localhost:8080
 ```
 
----
-
-## 🏗️ Production Build
+###  Run seed script (development only)
 
 ```bash
-npm run build
-npm start
+npm run seed
+```
+
+---
+
+## ⚙️ Environment Variables 
+
+## Create a `.env` file in the root directory:
+
+### Frontend .env
+```
+  VITE_BACKEND_API_URL="http://localhost:8080/api/v1"
+```
+
+### Backend .env
+```
+PORT=8080
+MONGO_URI=mongodb://localhost:27017/saas-notes
+JWT_SECRET=your_jwt_secret
+JWT_EXPIRY=your_jwt_expiry
+MAIL_USER=your_email
+MAIL_PASS=your_password
+FRONTEND_URL=your_frontend_url
 ```
 
 ---
@@ -285,9 +326,44 @@ Response:
 ```json
 { "status": "Pong" }
 ```
-
-
-
 ---
 
+## 📸 Screenshots
+
+### Landing_Page
+<img width="1883" height="906" alt="Home1" src="https://github.com/user-attachments/assets/73ad51f6-00bc-4fa5-844f-de3d0008dcb0" />
+
+<img width="1900" height="898" alt="Home2" src="https://github.com/user-attachments/assets/332f161a-2667-4979-b5ba-4369f4aa45fc" />
+
+### Login_Page
+
+<img width="1516" height="912" alt="login" src="https://github.com/user-attachments/assets/dd8faf13-2f84-44d8-a045-97f11074f59e" />
+
+### Create_Note
+
+<img width="1483" height="903" alt="CreateNote" src="https://github.com/user-attachments/assets/d8148929-e562-4231-bdec-7e97333feb61" />
+
+### Edit_Note
+
+<img width="1492" height="905" alt="EditNote" src="https://github.com/user-attachments/assets/b91d27d3-8a93-4e0e-ac0b-ed77a53bcf15" />
+
+### Delete_Note
+
+<img width="1663" height="665" alt="Delete" src="https://github.com/user-attachments/assets/8335c761-18fc-4ce4-8652-060355e7939d" />
+
+### MyNotes
+
+<img width="1598" height="903" alt="AllmyNotes" src="https://github.com/user-attachments/assets/283500b2-8c46-445c-8b66-71fc27d000c7" />
+
+## Admin Section
+
+### Upgrade_Plan
+<img width="1762" height="905" alt="upgradePlan" src="https://github.com/user-attachments/assets/6b58a038-9751-489f-a90e-52dababbd237" />
+
+### Invite_User
+<img width="1520" height="905" alt="inviteUser" src="https://github.com/user-attachments/assets/109aa336-3c50-42da-ac53-697af875a511" />
+
+## Member Section
+### Accept_Invite
+<img width="1643" height="910" alt="accept-invite" src="https://github.com/user-attachments/assets/9d7129fa-03be-43d8-963c-6ca2e88cb4d5" />
 

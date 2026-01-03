@@ -122,8 +122,6 @@ const AuthSlice = createSlice({
       login.fulfilled,
       (state, action: PayloadAction<AxiosResponse<LoginResponse>>) => {
         // reducer which will execute when the login thunk is fulfilled
-        console.log("extraReducers", action, "state-------", state);
-
         state.isAuthenticated = action?.payload?.data?.success;
         state.role = action?.payload?.data?.user?.role;
         state.userData = action?.payload?.data?.user;
