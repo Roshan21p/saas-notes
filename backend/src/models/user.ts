@@ -23,7 +23,6 @@ const userSchema = new Schema<IUser>(
     email: {
       type: String,
       required: true,
-      unique: true,
       lowercase: true, // <--- important
       trim: true,
     },
@@ -49,6 +48,12 @@ const userSchema = new Schema<IUser>(
   {
     timestamps: true,
   }
+);
+
+//  Multi-tenant unique constraint
+userSchema.index(
+  { email: 1, tenantId: 1 },
+  { unique: true }
 );
 
 userSchema.pre("save", async function () {

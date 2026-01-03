@@ -4,27 +4,31 @@ import { createJWT } from "../utils/authUtils";
 import bcrypt from "bcrypt";
 
 import { verifyToken } from "../utils/verifyToken";
+import { Tenant } from "../models/tenant";
 
 interface AcceptInviteInput {
-   token: string;
+  token: string;
   password: string;
 }
-
 
 export const loginService = async (data: {
   email: string;
   password: string;
+  slug: string;
 }) => {
   try {
-    const { email, password } = data;
+    const { email, password, slug } = data;
 
     //1. check whether the data missing or not
     if (!email || !password) {
-      throw new AppError(400, "Email and password required");
+      throw new AppError(400, "Email, password and slug required");
     }
 
+    const tenant = await Tenant.findOne({ slug });
+    if (!tenant) throw new AppError(404, "Tenant not found");
+
     //2. Check if there is a registered user with the given email
-    const user = await User.findOne({ email });
+    const user = await User.findOne({ email, tenantId: tenant._id });
 
     if (!user) {
       throw new AppError(404, "No registered user found with this email");
@@ -59,36 +63,36 @@ export const loginService = async (data: {
   }
 };
 
-
-export const acceptInviteService = async ({ token, password }: AcceptInviteInput) => {
+export const acceptInviteService = async ({
+  token,
+  password,
+}: AcceptInviteInput) => {
   try {
-     if (!token) {
-    throw new AppError(400, "Invite token is required.");
-  }
-  if (!password) {
-    throw new AppError(400, "Password is required.");
-  }
+    if (!token) {
+      throw new AppError(400, "Invite token is required.");
+    }
+    if (!password) {
+      throw new AppError(400, "Password is required.");
+    }
 
-  let payload: any;
+    let payload: any;
 
-  payload = verifyToken(token);
+    payload = verifyToken(token);
 
-  const user = await User.findById(payload.id);
+    const user = await User.findById(payload.id);
 
-   if (!user) {
-    throw new AppError(404, "User not found.");
-  }
+    if (!user) {
+      throw new AppError(404, "User not found.");
+    }
 
-  if (!user.isInvited) {
-    throw new AppError(400, "Invite already accepted.");
-  }
+    if (!user.isInvited) {
+      throw new AppError(400, "Invite already accepted.");
+    }
 
-
-  user.password = password;
-  user.isInvited = false; // mark as accepted
-  await user.save();
-
+    user.password = password;
+    user.isInvited = false; // mark as accepted
+    await user.save();
   } catch (error) {
     throw error;
   }
-}
+};

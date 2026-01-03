@@ -119,7 +119,7 @@ export const inviteUserService = async (
     );
 
     // Create invitation URL (frontend handles invite acceptance)
-    const inviteUrl = `${FRONTEND_URL}/invite?token=${inviteToken}`;
+    const inviteUrl = `${FRONTEND_URL}/accept-invite?token=${inviteToken}`;
 
     const companyName = slug
       ? slug.charAt(0).toUpperCase() + slug.slice(1)
