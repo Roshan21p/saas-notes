@@ -20,7 +20,7 @@ export const loginService = async (data: {
     const { email, password, slug } = data;
 
     //1. check whether the data missing or not
-    if (!email || !password) {
+    if (!email || !password || !slug) {
       throw new AppError(400, "Email, password and slug required");
     }
 

@@ -1,0 +1,23 @@
+# Node
+node_modules
+npm-debug.log
+yarn-error.log
+
+# TypeScript build output
+dist
+
+# Environment variables
+.env
+
+# Git
+.git
+.gitignore
+
+# Docker
+Dockerfile
+.dockerignore
+
+# OS / Editor
+.vscode
+.idea
+.DS_Store

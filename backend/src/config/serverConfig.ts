@@ -3,7 +3,7 @@ dotenv.config();
 
 export const PORT = process.env.PORT || 3000;
 
-export const DB_URL = process.env.DB_URL || "";
+export const DB_URL = process.env.DB_URL || "mongodb://mongo:27017/saas";
 
 export const JWT_SECRET: string = process.env.JWT_SECRET!; // Use non-null assertion
 

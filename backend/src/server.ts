@@ -18,6 +18,13 @@ app.listen(PORT, async () => {
   }
 });
 
+app.get('/health', (req, res) => {
+  res.status(200).json({
+    status: 'ok',
+    uptime: process.uptime()
+  });
+});
+
 app.get("/connect-db", async (req, res) => {
   try {
     await connectDB();
