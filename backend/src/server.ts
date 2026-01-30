@@ -5,7 +5,7 @@ import app from "./app";
 import connectDB from "./config/dbConfig";
 import { PORT } from "./config/serverConfig";
 
-app.listen(PORT, async () => {
+app.listen(PORT , async () => {
   try {
     await connectDB();
     console.log(`Server is running at http://localhost:${PORT}`);

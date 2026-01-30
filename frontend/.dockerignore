@@ -1,0 +1,29 @@
+# node modules should not go inside Docker image
+node_modules
+
+# build output on host (we build again inside Docker)
+dist
+build
+
+# git files
+.git
+.gitignore
+
+# local env files
+.env
+
+# logs
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# OS / editor files
+.DS_Store
+Thumbs.db
+.vscode
+.idea
+
+# Docker files themselves (optional but clean)
+Dockerfile
+.dockerignore
+
