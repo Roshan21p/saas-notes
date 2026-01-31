@@ -5,7 +5,6 @@ const apiClient: AxiosInstance = axios.create({
     withCredentials: true,    // Allow cookies to be sent with requests
 })
 
-console.log("API Client Base URL:", apiClient.defaults.baseURL);
 // Attach token before every request
 apiClient.interceptors.request.use(
   (config) => {
