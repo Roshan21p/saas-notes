@@ -55,16 +55,19 @@ services:
       - saas-network
 
   frontend:
-    build: ./frontend
+    build: 
+      context: ./frontend
+
+      # Build-time argument to pass backend API URL to frontend build (not runtime)
+
+      args:
+        VITE_BACKEND_API_URL: http://localhost:8080/api/v1
+
     container_name: saas-frontend
 
     # Map host port 5173 to container port 80 where nginx serves the frontend app
     ports:
       - "5173:80"
-
-    # Set environment variable for frontend to call backend API via localhost (adjust as needed)
-    environment:
-      - VITE_BACKEND_API_URL=http://localhost:8080/api/v1
 
     # Ensure frontend starts only after backend is up
     depends_on:
@@ -73,6 +76,9 @@ services:
     # Connect frontend to the shared network
     networks:
       - saas-network
+    
+     # Restart frontend automatically on failure or system reboot
+    restart: always
 
 # Named volume to persist MongoDB data between container restarts
 volumes:
