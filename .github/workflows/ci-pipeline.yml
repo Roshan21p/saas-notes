@@ -33,9 +33,10 @@ jobs:
       - name: Build Frontend Image
         run: |
           docker build \
-            -t ${{ secrets.DOCKER_USERNAME }}/saas-notes-frontend:latest \
-            --build-arg VITE_BACKEND_API_URL=http://localhost:8080/api/v1 \
-            -f frontend/Dockerfile ./frontend 
+             --no-cache \
+             -t ${{ secrets.DOCKER_USERNAME }}/saas-notes-frontend:latest \
+             --build-arg VITE_BACKEND_API_URL=http://localhost:8080/api/v1 \
+             -f frontend/Dockerfile ./frontend
 
       - name: Push Frontend Image
         run: |
