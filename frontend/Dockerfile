@@ -32,8 +32,9 @@ RUN rm -rf /usr/share/nginx/html/*
 # Copy built files from builder
 COPY --from=builder /app/dist /usr/share/nginx/html
 
-# Optional: copy custom nginx config for SPA routing if needed
-# COPY nginx.conf /etc/nginx/nginx.conf
+# Copy custom nginx config for SPA routing if needed
+COPY nginx.conf /etc/nginx/conf.d/default.conf
+
 
 EXPOSE 80
 
