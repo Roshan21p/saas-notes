@@ -3,6 +3,10 @@ name: Build and Push Frontend & Backend Docker Images
 on: 
   push:
     branches: ["main"]
+    paths:
+      - "backend/**"
+      - "frontend/**"
+      - ".github/workflows/**"
 
 jobs:
   build-and-push:

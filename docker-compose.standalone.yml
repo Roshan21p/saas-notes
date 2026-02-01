@@ -1,0 +1,50 @@
+version: "3.9"
+
+services:
+  mongo:
+    image: mongo:7
+    container_name: saas-mongo
+    restart: always
+    volumes:
+      - mongo_data:/data/db
+    ports:
+      - "27017:27017"
+    networks:
+      - saas-network
+
+  backend:
+    image: roshan21p/saas-notes-backend:latest
+    container_name: saas-backend
+    restart: always
+    depends_on:
+      - mongo
+    environment:
+      DB_URL: "mongodb://mongo:27017/saas"
+      PORT: "8080"
+      JWT_SECRET: "saasnotesecret"
+      JWT_EXPIRY: "7d"
+      MAIL_USER: "your_email@gmail.com"
+      MAIL_PASS: "your_app_password"
+      FRONTEND_URL: "http://localhost:5173"
+    ports:
+      - "8080:8080"
+    networks:
+      - saas-network
+
+  frontend:
+    image: roshan21p/saas-notes-frontend:latest
+    container_name: saas-frontend
+    restart: always
+    depends_on:
+      - backend
+    ports:
+      - "5173:80"
+    networks:
+      - saas-network
+
+volumes:
+  mongo_data:
+
+networks:
+  saas-network:
+    driver: bridge
