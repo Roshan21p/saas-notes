@@ -356,7 +356,6 @@ Response:
 { "status": "Pong" }
 ```
 
----
 
 ---
 

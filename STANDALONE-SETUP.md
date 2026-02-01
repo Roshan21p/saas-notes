@@ -18,6 +18,14 @@ docker-compose -f docker-compose.standalone.yml up -d
 
 Wait 15-20 seconds for all services to start.
 
+ **Run seed script (in another terminal):**
+ 
+After all containers are running and healthy, seed the database:
+
+```bash
+docker-compose exec backend npm run seed
+```
+
 ### Step 3: Access Application
 - **Frontend**: http://localhost:5173
 - **Backend API**: http://localhost:8080
